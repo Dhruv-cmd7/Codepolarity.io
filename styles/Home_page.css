@@ -238,6 +238,9 @@ main {
   color: #1c76ce;
 }
 .mhero-content{
+  display: flex;
+  flex-direction:row;
+
   padding: 200px 0px 200px 0px;
 }
 .hero-content {
@@ -263,7 +266,7 @@ h2 {
 }
 
 .action-button {
-  width: 50%;
+  width: 100%;
   background-color: #1a1a1a;
   border: none;
   border-radius: 12px;
@@ -285,6 +288,7 @@ h2 {
 .button-content {
   display: flex;
   align-items: center;
+  font-family: raleway;
   gap: 12px;
 }
 
@@ -384,16 +388,18 @@ h2 {
 
 /* Hero Section 3 */
 .hero2 {
-  /* min-height: 80vh; */
-  background-color: transparent;
-  /* padding: 80px,0px; */
   display: flex;
-  /* align-items: center; */
-  /* gap: 3rem; */
+  justify-content: space-between;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  padding: 80px 0;
+ 
 }
 .hero-content2 {
   flex: 1;
-  padding: 160px 90px;
+  text-align: right;
+  padding: 30px 90px 100px 90px;
 }
 .hero-content2 h1 {
   font-size: 50px;
