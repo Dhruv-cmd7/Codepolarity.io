@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keypolarity | typing practice - from codepolarity</title>
+  <link rel="icon" type="image/png" sizes="16x16" href="keypolarity logo.svg" />
+  <link rel="stylesheet" href="../styles/typing_t.css">
+</head>
+<body>
+  <a href="Home_page.html" class="back-btn">
+    <img src="../assets/images/caret-down.svg" alt="Back" />Back
+  </a>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <img src="../assets/images/keypolarity.svg" height="50px" alt="">
+      </div>
+      <p>Improve your coding speed with typing practice</p>
+    </header>
+
+    <main>
+      <div class="controls">
+        <div class="mode-container">
+          <label for="mode-select" class="mode-label">Mode:</label>
+          <select id="mode-select" class="mode-select">
+            <option value="code" selected>Code</option>
+            <option value="english">English</option>
+          </select>
+        </div>
+
+        <div class="timer-container">
+          <label for="timer-select" class="timer-label">Timer:</label>
+          <select id="timer-select" class="timer-select">
+            <option value="15">15 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="60" selected>60 seconds</option>
+            <option value="120">2 minutes</option>
+            <option value="300">5 minutes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stats-item">
+          <span>Timer</span>
+          <span id="timer">60</span>
+        </div>
+        <div class="stats-item">
+          <span>WPM</span>
+          <span id="wpm">0</span>
+        </div>
+        <div class="stats-item">
+          <span>Accuracy</span>
+          <span id="accuracy">100%</span>
+        </div>
+        <div class="stats-item">
+          <span>Errors</span>
+          <span id="errors">0</span>
+        </div>
+        <button id="reset" class="reset-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Reset
+        </button>
+      </div>
+
+      <div id="typing-area" class="typing-area">
+        <pre><code id="code-display"></code></pre>
+        <textarea id="input" spellcheck="false" autocomplete="off"></textarea>
+      </div>
+
+      <div id="start-prompt" class="start-prompt">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>Start typing to begin...</span>
+      </div>
+
+      <div id="completion-screen" class="completion-screen hidden">
+        <div class="trophy">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5h3.5"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5h-3.5"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+        </div>
+        <h2>Great job!</h2>
+        <div class="final-stats">
+          <div class="final-stat">
+            <div>Final WPM</div>
+            <div id="final-wpm">0</div>
+          </div>
+          <div class="final-stat">
+            <div>Accuracy</div>
+            <div id="final-accuracy">100%</div>
+          </div>
+          <div class="final-stat">
+            <div>Total Errors</div>
+            <div id="final-errors">0</div>
+          </div>
+        </div>
+        <button id="try-again" class="try-again-btn">Try Another Snippet</button>
+      </div>
+    </main>
+  </div>
+  <script src="../scripts/snippets.js"></script>
+  <script src="../scripts/script.js"></script>
+</body>
+</html>
