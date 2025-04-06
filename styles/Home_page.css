@@ -31,14 +31,21 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px 10px 10px 10px;
-  position: relative;
+  padding: 30px 10px 35px 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* right: 1; */
+  width: 100%;
+  z-index: 1000;
+  background: transparent;
+  backdrop-filter: blur(10px);
 }
 
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 32px;
+  /* gap: 3000px; */
   flex-grow: 1;
   justify-content: center;
 }
@@ -49,7 +56,7 @@ nav {
   align-items: center;
   gap: 5px;
   position: absolute;
-  left: 0px;
+  left: 90px;
 }
 
 /* First part of the logo (animated) */
@@ -93,6 +100,18 @@ nav button:hover {
   color: #1c76ce;
   transform: scale(1.1);
 }
+nav button::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #1c76ce;
+  transition: width 0.3s;
+}
+nav button:hover::after {
+  width: 100%;
+}
+
 ai-logo {
   height: 1px;
   position: relative;
@@ -157,8 +176,6 @@ ai-logo {
   transform: scale(1.1);
 }
 
-
-
 .dropbtn:focus + .dropdown-content,
 .dropdown:focus-within .dropdown-content {
   display: block;
@@ -178,13 +195,16 @@ ai-logo {
   border-radius: 0.3em;
   background-image: linear-gradient(45deg, #a7a8ad, #ffffff);
   border: 1px solid #a7a8ad;
+  right: 90%;
 }
 .button2:hover {
   color: #ffffff;
   border: 1px;
   font-size: 18px;
   background: #1c76ce;
-  transform: scale(1.1);
+  transition: transform 0.3s ease;
+
+  /* transform: scale(1.1);; */
 }
 
 /* Hero section 1 */
@@ -194,18 +214,18 @@ ai-logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 110vh;
 }
 .ce-text h1 {
   font-size: 13rem;
-  font-weight:bolder;
+  font-weight: bolder;
   line-height: 0.9;
   letter-spacing: -7px;
   text-align: center;
 }
 
 .ce-gradient {
-  background: linear-gradient(to right, #a7a8ad, #fdfffe);
+  background: linear-gradient(to right, #60a6fa, #22d2ee);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -237,13 +257,14 @@ main {
 .highlight_text {
   color: #1c76ce;
 }
-.mhero-content{
+.mhero-content {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
 
   padding: 200px 0px 200px 0px;
 }
-.hero-content {
+
+/* .hero-content {
   flex: 1;
 }
 .hero-content h1 {
@@ -251,9 +272,9 @@ main {
   font-weight: bold;
   line-height: 1.1;
   margin-bottom: 24px;
-}
+} */
 
-h2 {
+/* h2 {
   font-size: 20px;
   color: #9ca3af;
   margin-bottom: 32px;
@@ -318,10 +339,10 @@ h2 {
 .describe-button:hover {
   border-color: rgba(255, 255, 255, 0.3);
   color: white;
-}
+} */
 
 /* Hero Image */
-.hero-image {
+/* .hero-image {
   flex: 1;
   position: relative;
 }
@@ -334,10 +355,69 @@ h2 {
   width: 100%;
   border-radius: 8px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+} */
+
+.text-center {
+  text-align: center;
+}
+
+.highlight {
+  color: #1c76ce;
+}
+
+.feature-grid {
+  display: flex;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  /* width:  800px;
+  height: 280px; */
+  margin-top: 4rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.034);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 350px;
+  height: 200px;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.05);
+  transform: scale(1.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.main-content h3 {
+  display: flex;
+  align-items: center;
+  /* gap: 10rem; */
+  margin-bottom: 0.8rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.arrow {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.feature-card:hover .arrow {
+  opacity: 1;
 }
 
 .brand-scrolling {
-  overflow:visible;
+  overflow: visible;
   white-space: nowrap;
   padding: 40px 0;
   background: transparent;
@@ -351,13 +431,14 @@ h2 {
   text-align: center;
 }
 .brand-title2 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
-  padding-top: 20px;
+  padding-top: 30px;
   /* margin-bottom: 30px; */
   color: #77777a;
   text-align: center;
 }
+
 .brand-track {
   display: flex;
   gap: 50px;
@@ -394,7 +475,6 @@ h2 {
   display: flex;
   align-items: center;
   padding: 80px 0;
- 
 }
 .hero-content2 {
   flex: 1;
@@ -496,13 +576,19 @@ h2 {
 
 /* Platform Section */
 .platform {
-  background-color: #1c76ce;
+  background: linear-gradient(45deg, #1c76ce, #1e40af);
   color: white;
-  min-height: 80vh;
+  min-height: 70vh;
   padding: 0 10rem 0rem 10rem;
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: 9rem;
+  border-radius: 2rem;
+  /* margin: 4rem 2rem; */
+
+  margin-bottom: 10rem;
+  overflow: hidden;
+  grid-template-columns: 1fr 1fr;
 }
 
 .platform-content {
@@ -510,7 +596,8 @@ h2 {
 }
 .platform-content h2 {
   color: white;
-  font-size: 40px;
+  font-size: 35px;
+  margin-bottom: 1rem;
 }
 .platform-image {
   flex: 1;
@@ -539,9 +626,12 @@ h2 {
 
 /* Footer CSS  */
 .footer {
-  background: black;
+  /* background: black; */
+  background: transparent;
+  backdrop-filter: blur(10px);
+
   color: white;
-  padding: 80px 0;
+  padding-bottom: 17%;
   font-family: "Poppins", sans-serif;
 }
 
@@ -576,12 +666,13 @@ h2 {
 
 .footer-links {
   display: flex;
-  gap: 40px;
+  gap: 50px;
+  
 }
 
 .footer-column h4 {
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .footer-column ul {
@@ -590,7 +681,7 @@ h2 {
 }
 
 .footer-column ul li {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .footer-column ul li a {
@@ -619,10 +710,14 @@ h2 {
 
 .footer-bottom {
   text-align: center;
-  margin-top: 130px;
-  margin-bottom: -40px;
+  margin-top: 25%;
+  margin-bottom: -240px;
   font-size: 14px;
   color: #888;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.footer-bottom p {
+  margin-top: 20px;
 }
 
 /* Responsive Design */
@@ -740,8 +835,6 @@ h2 {
     font-size: 3rem;
   }
 
-  
-
   .hero-content2 h1 {
     font-size: 2.5rem;
   }
@@ -854,4 +947,19 @@ h2 {
   .ai-features-title {
     font-size: 2rem;
   }
+}
+
+.highlight-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(28, 117, 206, 0.375),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
 }
