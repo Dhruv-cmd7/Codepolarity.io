@@ -10,10 +10,6 @@ body {
   color: white;
   min-height: 100vh;
   background-color: black;
-  /* background-image: radial-gradient(
-    rgba(255, 255, 255, 0.356) 1px,
-    transparent 1px
-  ); */
   background-size: 40px 40px;
   background-position: center;
   overflow-x: hidden;
@@ -90,7 +86,7 @@ nav button {
   background: none;
   border: none;
   font-family: raleway;
-  color: #d1d5db;
+  color: #ffffff;
   font-size: 16px;
   cursor: pointer;
   transition: color 0.2s;
@@ -127,7 +123,9 @@ ai-logo {
 .dropbtn {
   background: transparent;
   border: none;
-  color: #d1d5db;
+  color: #ffffff;
+  /* color: #d1d5db; */
+
   font-size: 16px;
   font-family: raleway;
 
@@ -198,6 +196,31 @@ ai-logo {
   right: 90%;
 }
 .button2:hover {
+  color: #ffffff;
+  border: 1px;
+  font-size: 18px;
+  background: #1d4ed8;
+  transition: transform 0.3s ease;
+
+  /* transform: scale(1.1);; */
+}
+
+.button3 {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: #ffffff;
+  padding: 0.4em 1em;
+  cursor: pointer;
+  font-family: raleway;
+  font-size: 18px;
+  border-radius: 0.3em;
+  background:transparent;
+  border: 1px solid #a7a8ad;
+  right: 90%;
+}
+.button3:hover {
   color: #ffffff;
   border: 1px;
   font-size: 18px;
@@ -409,7 +432,7 @@ main {
 }
 
 .btn.dark:hover {
-  background-color: #1f2937;
+  background-color: #000000;
   transform: scale(1.1);
 }
 
@@ -749,6 +772,18 @@ main {
 
   color: #fff;  
   
+  
+}
+.ai-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ai-card-link:focus,
+.ai-card-link:active {
+  outline: none;
+  text-decoration: none;
 }
 
 .icon {

@@ -3,22 +3,22 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
+  
+
 }
 
 body {
-  background-color: #000;
+  background-color: black;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: raleway;
   color: white;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: white;
+    
   min-height: 100vh;
   background-color: black;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.462) 1px, transparent 1px);
-  background-size: 40px 40px; /* Adjust the dot spacing */
   background-position: center;
 }
 
@@ -27,12 +27,11 @@ body {
 }
 
 .card {
-  background-color: #0000007f;
- 
+  background: rgba(59, 131, 246, 0.038);
+  border: 2px solid rgba(29, 79, 216, 0.153);
   padding: 30px;
   border-radius: 10px;
   width: 350px;
-  border: 1px solid #7625ef8e;
   /* box-shadow: 0 0 10px rgb(255, 255, 255); */
 }
 
@@ -58,16 +57,16 @@ input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: 1px solid #333;
+  border: 1px solid #1d4fd871;
   border-radius: 5px;
-  background-color: #222;
+  background-color: #22222236;
   color: white;
   transition: border-color 0.3s;
 }
 
 input:hover,
 input:focus {
-  border-color: #7525ef;
+  border-color: #1d4ed8;
 }
 
 .btn {
@@ -83,7 +82,7 @@ input:focus {
 }
 
 .btn:hover {
-  background-color: #7525ef;
+  background-color: #1d4ed8;
   color: white;
   transform: scale(1.1);
 }
@@ -96,9 +95,9 @@ input:focus {
 .oauth-btn {
   width: 100%;
   padding: 10px;
-  border: 1px solid #444;
-  border-radius: 5px;
-  background-color: #222;
+  border: 1px solid #1d4fd871;
+  border-radius: 10px;
+  background-color: #22222236;
   color: white;
   display: flex;
   align-items: center;
@@ -109,8 +108,8 @@ input:focus {
 }
 
 .oauth-btn:hover {
-  background-color: #7525ef;
-  border-color: #7525ef;
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
   transform: scale(1.1);
 }
 
@@ -119,7 +118,7 @@ input:focus {
 }
 
 a {
-  color: #7525ef;
+  color: #1d4ed8;
   text-decoration: none;
 }
 
@@ -154,4 +153,17 @@ a {
   /* Slight zoom effect on hover */
 }
 
-/* transform hover effect to saw big  */
+.highlight-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(28, 117, 206, 0.375),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
