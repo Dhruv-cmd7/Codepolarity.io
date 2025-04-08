@@ -1,319 +1,200 @@
-let currentSnippet = 0;
-let input = '';
-let startTime = null;
-let lastWordIndex = 0;
-let currentWordStart = 0;
-let isCompleted = false;
-let timerInterval = null;
-let timeLeft = 60; // default timer value
-let selectedTime = 60; // store the selected time
-let currentMode = 'code'; // 'code' or 'english'
+const codeSnippets = [
+  `function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}`,
+  `const quickSort = (arr) => {
+  if (arr.length <= 1) return arr;
+  const pivot = arr[0];
+  const left = arr.slice(1).filter(x => x <= pivot);
+  const right = arr.slice(1).filter(x => x > pivot);
+  return [...quickSort(left), pivot, ...quickSort(right)];
+}`
+];
 
-const elements = {
-  input: document.getElementById('input'),
-  codeDisplay: document.getElementById('code-display'),
-  startPrompt: document.getElementById('start-prompt'),
-  completionScreen: document.getElementById('completion-screen'),
-  timer: document.getElementById('timer'),
-  timerSelect: document.getElementById('timer-select'),
-  modeSelect: document.getElementById('mode-select'),
-  typingArea: document.getElementById('typing-area'),
-  stats: {
-    wpm: document.getElementById('wpm'),
-    accuracy: document.getElementById('accuracy'),
-    errors: document.getElementById('errors'),
-    final: {
-      wpm: document.getElementById('final-wpm'),
-      accuracy: document.getElementById('final-accuracy'),
-      errors: document.getElementById('final-errors')
-    }
-  }
-};
+const textSnippets = [
+  "The quick brown fox jumps over the lazy dog while the autumn leaves fall gently to the ground creating a colorful carpet of nature's beauty.",
+  "Programming is both an art and a science requiring creativity logic and attention to detail as developers craft elegant solutions to complex problems."
+];
 
-// Mode selection functionality
-elements.modeSelect.addEventListener('change', () => {
-  if (!startTime) { // Only allow changing mode before starting
-    currentMode = elements.modeSelect.value;
-    elements.typingArea.classList.toggle('english-mode', currentMode === 'english');
-    reset();
-  }
-});
+class KeyPolarity {
+  constructor() {
+    this.mode = 'text';
+    this.currentText = '';
+    this.typedText = '';
+    this.startTime = null;
+    this.wpm = 0;
+    this.accuracy = 100;
+    this.isFinished = false;
+    this.timerOption = 30;
+    this.timeLeft = 30;
+    this.isActive = false;
+    this.timerInterval = null;
 
-// Timer selection functionality
-elements.timerSelect.addEventListener('change', () => {
-  if (!startTime) { // Only allow changing time before starting
-    selectedTime = parseInt(elements.timerSelect.value);
-    timeLeft = selectedTime;
-    elements.timer.textContent = timeLeft;
-  }
-});
-
-function startTimer() {
-  if (timerInterval) return;
-  
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    elements.timer.textContent = timeLeft;
-    
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      completeTest();
-    }
-  }, 1000);
-}
-
-function getCurrentText() {
-  if (currentMode === 'code') {
-    return codeSnippets[currentSnippet].code;
-  } else {
-    return englishSnippets[currentSnippet].text;
-  }
-}
-
-function getNextLineIndentation(currentPosition) {
-  if (currentMode === 'english') return '';
-  
-  const code = getCurrentText();
-  const nextNewlineIndex = code.indexOf('\n', currentPosition);
-  if (nextNewlineIndex === -1) return '';
-
-  const nextLineStart = nextNewlineIndex + 1;
-  const indentMatch = code.slice(nextLineStart).match(/^[\s]*/);
-  return indentMatch ? indentMatch[0] : '';
-}
-
-function findLastWordBreakIndex(text, currentIndex) {
-  const breakChars = new Set([' ', '\n', '{', '}', '(', ')', ';', ',', '.']);
-  for (let i = currentIndex - 1; i >= 0; i--) {
-    if (breakChars.has(text[i])) {
-      return i + 1;
-    }
-  }
-  return 0;
-}
-
-function isWordComplete(text, position) {
-  const currentText = getCurrentText();
-  const nextChar = currentText[position];
-  const breakChars = new Set([' ', '\n', '{', '}', '(', ')', ';', ',', '.']);
-  return breakChars.has(nextChar) && text[position - 1] === currentText[position - 1];
-}
-
-function calculateStats() {
-  if (!startTime) return;
-
-  const timeElapsed = (Date.now() - startTime) / 1000 / 60; // in minutes
-  const words = input.length / 5; // assume average word length of 5
-  const wpm = Math.round(words / timeElapsed);
-
-  let correctChars = 0;
-  let totalChars = 0;
-
-  // Compare characters, ignoring indentation differences
-  let textIndex = 0;
-  let inputIndex = 0;
-  const currentText = getCurrentText();
-
-  while (inputIndex < input.length && textIndex < currentText.length) {
-    const inputChar = input[inputIndex];
-    const textChar = currentText[textIndex];
-
-    // Skip whitespace in both strings
-    if (/\s/.test(inputChar) && /\s/.test(textChar)) {
-      inputIndex++;
-      textIndex++;
-      continue;
-    }
-
-    // Skip additional whitespace in either string
-    if (/\s/.test(inputChar)) {
-      inputIndex++;
-      continue;
-    }
-    if (/\s/.test(textChar)) {
-      textIndex++;
-      continue;
-    }
-
-    totalChars++;
-    if (inputChar === textChar) {
-      correctChars++;
-    }
-
-    inputIndex++;
-    textIndex++;
+    this.initializeElements();
+    this.addEventListeners();
+    this.resetTest();
   }
 
-  const accuracy = Math.round((correctChars / totalChars) * 100) || 100;
-  const errors = totalChars - correctChars;
-
-  // Update stats display
-  elements.stats.wpm.textContent = wpm;
-  elements.stats.accuracy.textContent = `${accuracy}%`;
-  elements.stats.errors.textContent = errors;
-
-  return { wpm, accuracy, errors };
-}
-
-function updateDisplay() {
-  const currentText = getCurrentText();
-  elements.codeDisplay.innerHTML = currentText.split('').map((char, i) => {
-    const inputChar = input[i];
-    let className = '';
-    
-    if (inputChar !== undefined) {
-      className = (char === inputChar || (/\s/.test(char) && /\s/.test(inputChar)))
-        ? 'correct'
-        : 'incorrect';
-    }
-    
-    return `<span class="${className}">${char}</span>`;
-  }).join('');
-}
-
-function completeTest() {
-  isCompleted = true;
-  const stats = calculateStats();
-  
-  // Update final stats
-  elements.stats.final.wpm.textContent = stats.wpm;
-  elements.stats.final.accuracy.textContent = `${stats.accuracy}%`;
-  elements.stats.final.errors.textContent = stats.errors;
-  
-  // Show completion screen
-  elements.completionScreen.classList.remove('hidden');
-  elements.input.disabled = true;
-  
-  // Clear timer
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-}
-
-function checkCompletion() {
-  const currentText = getCurrentText();
-  const normalizedInput = input.replace(/\s+/g, ' ').trim();
-  const normalizedText = currentText.replace(/\s+/g, ' ').trim();
-  
-  if (normalizedInput === normalizedText) {
-    completeTest();
-  }
-}
-
-function isCurrentWordComplete() {
-  const lastChar = input[input.length - 1];
-  const breakChars = new Set([' ', '\n', '{', '}', '(', ')', ';', ',', '.']);
-  return breakChars.has(lastChar);
-}
-
-function handleInput(e) {
-  // Prevent tab key
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    return;
+  initializeElements() {
+    this.textMode = document.getElementById('textMode');
+    this.codeMode = document.getElementById('codeMode');
+    this.textDisplay = document.getElementById('textDisplay');
+    this.resetButton = document.getElementById('resetButton');
+    this.wpmDisplay = document.getElementById('wpm');
+    this.accuracyDisplay = document.getElementById('accuracy');
+    this.timeLeftDisplay = document.getElementById('timeLeft');
+    this.timerButtons = document.querySelectorAll('.timer-buttons button');
   }
 
-  const newInput = e.target.value;
-  
-  // Handle backspace/undo
-  if (newInput.length < input.length) {
-    // Only allow backspace if the current word is not complete
-    if (isCurrentWordComplete()) {
-      e.preventDefault();
-      e.target.value = input;
-      return;
-    }
-    input = newInput;
-    updateDisplay();
-    return;
-  }
-
-  if (!startTime) {
-    startTime = Date.now();
-    elements.startPrompt.style.display = 'none';
-    startTimer();
-  }
-
-  // Handle new line with auto-indentation
-  if (newInput.endsWith('\n') && currentMode === 'code') {
-    const indentation = getNextLineIndentation(newInput.length - 1);
-    if (indentation) {
-      const inputWithIndent = newInput + indentation;
-      input = inputWithIndent;
-      e.target.value = inputWithIndent;
-      
-      // Set cursor position after indentation
-      requestAnimationFrame(() => {
-        const newPosition = inputWithIndent.length;
-        e.target.setSelectionRange(newPosition, newPosition);
+  addEventListeners() {
+    this.textMode.addEventListener('click', () => this.setMode('text'));
+    this.codeMode.addEventListener('click', () => this.setMode('code'));
+    this.resetButton.addEventListener('click', () => this.resetTest());
+    this.textDisplay.addEventListener('keydown', (e) => this.handleKeyDown(e));
+    this.timerButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        this.timerOption = parseInt(button.dataset.time);
+        this.timerButtons.forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        this.resetTest();
       });
-      updateDisplay();
+    });
+  }
+
+  setMode(newMode) {
+    this.mode = newMode;
+    this.textMode.classList.toggle('active', newMode === 'text');
+    this.codeMode.classList.toggle('active', newMode === 'code');
+    this.textDisplay.classList.toggle('text', newMode === 'text');
+    this.textDisplay.classList.toggle('code', newMode === 'code');
+    this.resetTest();
+  }
+
+  resetTest() {
+    const snippets = this.mode === 'text' ? textSnippets : codeSnippets;
+    this.currentText = snippets[Math.floor(Math.random() * snippets.length)];
+    this.typedText = '';
+    this.startTime = null;
+    this.wpm = 0;
+    this.accuracy = 100;
+    this.isFinished = false;
+    this.timeLeft = this.timerOption;
+    this.isActive = false;
+    clearInterval(this.timerInterval);
+    this.updateDisplay();
+    this.updateStats();
+  }
+
+  updateDisplay() {
+    this.textDisplay.innerHTML = this.currentText.split('').map((char, index) => {
+      let className = '';
+      if (index < this.typedText.length) {
+        className = this.typedText[index] === char ? 'correct' : 'incorrect';
+      }
+      return `<span class="${className}">${char}</span>`;
+    }).join('');
+  }
+
+  updateStats() {
+    this.wpmDisplay.textContent = this.wpm;
+    this.accuracyDisplay.textContent = this.accuracy;
+    this.timeLeftDisplay.textContent = this.timeLeft;
+  }
+
+  calculateWPM(typed, elapsed) {
+    const words = typed.trim().split(/\s+/).length;
+    const minutes = elapsed / 60000;
+    return Math.round(words / minutes);
+  }
+
+  calculateAccuracy(typed, target) {
+    let correct = 0;
+    const minLength = Math.min(typed.length, target.length);
+    for (let i = 0; i < minLength; i++) {
+      if (typed[i] === target[i]) correct++;
+    }
+    return Math.round((correct / typed.length) * 100) || 100;
+  }
+
+  getIndentation(text, currentPosition) {
+    const lastNewline = text.lastIndexOf('\n', currentPosition - 1);
+    const currentLine = text.slice(lastNewline + 1, currentPosition);
+    const match = currentLine.match(/^[ ]*/);
+    let indentation = match ? match[0] : '';
+
+    if (currentLine.trim().endsWith('{')) {
+      indentation += '  ';
+    }
+
+    return indentation;
+  }
+
+  handleKeyDown(e) {
+    if (this.isFinished) return;
+
+    if (!this.isActive) {
+      this.isActive = true;
+      this.startTime = Date.now();
+      this.timerInterval = setInterval(() => {
+        this.timeLeft--;
+        this.updateStats();
+        if (this.timeLeft === 0) {
+          this.isFinished = true;
+          this.isActive = false;
+          clearInterval(this.timerInterval);
+        }
+      }, 1000);
+    }
+
+    if (e.key === 'Enter' && this.mode === 'code') {
+      e.preventDefault();
+      const indentation = this.getIndentation(this.currentText, this.typedText.length);
+      this.typedText += '\n' + indentation;
+      this.updateDisplay();
       return;
     }
-  }
 
-  // Update word tracking when a word break character is typed
-  const breakChars = new Set([' ', '\n', '{', '}', '(', ')', ';', ',', '.']);
-  if (breakChars.has(newInput[newInput.length - 1])) {
-    if (isWordComplete(newInput, newInput.length - 1)) {
-      lastWordIndex = newInput.length;
-      currentWordStart = newInput.length;
+    if (e.key === 'Tab' && this.mode === 'code') {
+      e.preventDefault();
+      this.typedText += '  ';
+      this.updateDisplay();
+      return;
     }
-  } else {
-    // Update current word start when starting a new word
-    if (newInput.length > input.length && breakChars.has(input[input.length - 1])) {
-      currentWordStart = input.length;
+
+    if (e.key === 'Backspace') {
+      if (this.typedText.length > 0) {
+        const lastCompleteWordIndex = this.typedText.lastIndexOf(' ');
+        const lastChar = this.typedText[this.typedText.length - 1];
+        if (lastChar === ' ' || this.typedText.length <= lastCompleteWordIndex + 1) {
+          this.typedText = this.typedText.slice(0, -1);
+          this.updateDisplay();
+        }
+      }
+      return;
+    }
+
+    if (e.key.length === 1) {
+      this.typedText += e.key;
+      this.updateDisplay();
+
+      if (!this.startTime) {
+        this.startTime = Date.now();
+      }
+
+      const elapsed = Date.now() - this.startTime;
+      this.wpm = this.calculateWPM(this.typedText, elapsed);
+      this.accuracy = this.calculateAccuracy(this.typedText, this.currentText);
+      this.updateStats();
+
+      if (this.typedText === this.currentText) {
+        this.isFinished = true;
+        this.isActive = false;
+        clearInterval(this.timerInterval);
+      }
     }
   }
-
-  input = newInput;
-  updateDisplay();
-  calculateStats();
-  checkCompletion();
 }
 
-function reset() {
-  if (currentMode === 'code') {
-    currentSnippet = (currentSnippet + 1) % codeSnippets.length;
-  } else {
-    currentSnippet = (currentSnippet + 1) % englishSnippets.length;
-  }
-  
-  input = '';
-  startTime = null;
-  lastWordIndex = 0;
-  currentWordStart = 0;
-  isCompleted = false;
-  timeLeft = selectedTime; // Use the selected time when resetting
-  
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-  
-  elements.timer.textContent = timeLeft;
-  elements.input.value = '';
-  elements.input.disabled = false;
-  elements.completionScreen.classList.add('hidden');
-  elements.startPrompt.style.display = 'flex';
-  
-  elements.stats.wpm.textContent = '0';
-  elements.stats.accuracy.textContent = '100%';
-  elements.stats.errors.textContent = '0';
-  
-  updateDisplay();
-}
-
-// Event listeners
-elements.input.addEventListener('input', handleInput);
-elements.input.addEventListener('keydown', (e) => {
-  if (e.key === 'Tab') {
-    e.preventDefault();
-  }
-});
-document.getElementById('reset').addEventListener('click', reset);
-document.getElementById('try-again').addEventListener('click', reset);
-
-// Initial setup
-updateDisplay();
+// Initialize the application
+new KeyPolarity();

@@ -749,8 +749,8 @@ main {
 }
 
 .ai-card {
-  background: rgba(59, 131, 246, 0.038);
-  border: 2px solid rgba(29, 79, 216, 0.153);
+  background: rgba(255, 255, 255, 0.034);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 
   border-radius: 15px;
   padding: 2rem;
