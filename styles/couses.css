@@ -1,0 +1,545 @@
+/* Modern CSS Reset and Base Styles */
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --secondary-color: #0ea5e9;
+    --accent-color: #f59e0b;
+    --background-color: #0f172a;
+    --card-background: rgba(30, 41, 59, 0.7);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: rgba(148, 163, 184, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --gradient-start: #4f46e5;
+    --gradient-end: #0ea5e9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    color: white;
+    line-height: 1.6;
+    min-height: 100vh;
+    background-color: black;
+    background-size: 40px 40px;
+    background-position: center;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Enhanced Container and Layout */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Enhanced Header Styling */
+.courses-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    padding: 2rem 0;
+}
+
+.header-content {
+    margin-bottom: 2rem;
+}
+
+.ce-gradient {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #60a7fa, #23d1ee);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+    animation: gradientFlow 8s ease infinite;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    color: #77777a;
+    margin-bottom: 2rem;
+}
+
+/* Enhanced Search and Filter Section */
+.search-container {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.034);
+    padding: 1rem 1.5rem;
+    border-radius: 25px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+}
+
+.search-box i {
+    color: #77777a;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.search-box input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-box input::placeholder {
+    color: #77777a;
+}
+
+/* Enhanced Filter Controls */
+.filter-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.filter-section {
+    position: relative;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%2377777a' d='M5 7.5L1.5 4 2.4 3.1 5 5.7l2.6-2.6.9.9z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 10px;
+    padding-right: 2.5rem;
+}
+
+.filter-select:hover {
+    border-color: #1d4ed8;
+    background-color: rgba(29, 78, 216, 0.05);
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
+}
+
+/* Enhanced Course Cards */
+.courses-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.course-card {
+    background: rgba(255, 255, 255, 0.034);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    background: rgba(59, 131, 246, 0.038);
+    border-color: rgba(29, 78, 216, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.course-card:hover .thumbnail {
+    transform: scale(1.05);
+}
+
+.course-content {
+    padding: 1.5rem;
+}
+
+.course-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: white;
+}
+
+.course-description {
+    color: #77777a;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+/* Enhanced Tags */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.034);
+    color: #77777a;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.tag:hover {
+    background: #1d4ed8;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Enhanced Course Link */
+.course-link {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: #1d4ed8;
+    color: white;
+    padding: 0.75rem;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.course-link:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+}
+
+/* Enhanced Difficulty Badge */
+.difficulty-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+.difficulty-beginner {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.difficulty-intermediate {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+}
+
+.difficulty-advanced {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+/* Enhanced Quiz Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.modal-content h2 {
+    color: white;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.modal-content p {
+    color: #77777a;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Enhanced Quiz Options */
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.quiz-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 1rem;
+    text-align: left;
+    position: relative;
+    padding-right: 3rem;
+}
+
+.quiz-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.quiz-option.selected {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.quiz-option::after {
+    content: "✓";
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-weight: bold;
+}
+
+.quiz-option.selected::after {
+    opacity: 1;
+}
+
+/* Enhanced Quiz Navigation */
+.quiz-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.quiz-btn {
+    background: #1d4ed8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    min-width: 100px;
+}
+
+.quiz-btn:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+}
+
+.skip-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.skip-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+/* Enhanced Progress Bar */
+.quiz-progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #1d4ed8, #1e40af);
+    width: 0;
+    transition: width 0.5s ease;
+    border-radius: 3px;
+}
+
+/* Enhanced Result Section */
+.result-content {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.level-badge {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    color: white;
+    box-shadow: 0 4px 15px rgba(29, 78, 216, 0.3);
+}
+
+.result-description {
+    color: #77777a;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 80%;
+    margin: 1.5rem auto 0;
+}
+
+/* Enhanced Back Button */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #77777a;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    color: #1d4ed8;
+    transform: translateX(-5px);
+}
+
+/* Animations */
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .ce-gradient {
+        font-size: 2.5rem;
+    }
+
+    .filter-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .courses-container {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+    }
+
+    .quiz-navigation {
+        flex-direction: column;
+    }
+
+    .quiz-btn {
+        width: 100%;
+    }
+
+    .quiz-option.selected {
+        transform: translateY(-2px);
+    }
+}
+
+/* Loading Animation */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.loading::after {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #1d4ed8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+} 

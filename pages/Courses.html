@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePolarity - Free Coding Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/couses.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <a href="Home_page.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+        <!-- Header Section -->
+        <header class="courses-header">
+            <div class="header-content">
+                <h1 class="ce-gradient">Free Coding Courses</h1>
+                <p class="subtitle">Learn programming from the best resources</p>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search courses...">
+                </div>
+                <div class="filter-controls">
+                    <div class="filter-section">
+                        <select id="languageFilter" class="filter-select">
+                            <option value="all">All Languages</option>
+                            <option value="english">English</option>
+                            <option value="hindi">Hindi</option>
+                            <option value="spanish">Spanish</option>
+                        </select>
+                    </div>
+                    <div class="filter-section">
+                        <select id="programmingLanguageFilter" class="filter-select">
+                            <option value="all">All Languages</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="c">C Programming</option>
+                            <option value="c++">C++</option>
+                            <option value="php">PHP</option>
+                            <option value="c#">C#</option>
+                            <option value="ruby">Ruby</option>
+                        </select>
+                    </div>
+                    <div class="filter-section">
+                        <select id="difficultyFilter" class="filter-select">
+                            <option value="all">All Levels</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="filter-section">
+                        <select id="contentTypeFilter" class="filter-select">
+                            <option value="all">All Content</option>
+                            <option value="playlist">Playlists</option>
+                            <option value="oneshot">One-shot Videos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div id="coursesContainer" class="courses-container">
+            <!-- Course cards will be dynamically added here -->
+        </div>
+
+        <!-- Quiz Modal -->
+        <div id="quizModal" class="modal">
+            <div class="modal-content">
+                <div id="quizIntro" class="quiz-section active">
+                    <h2>Welcome to the Skill Assessment Quiz!</h2>
+                    <p>Take this quick quiz to help us recommend the best courses for your skill level.</p>
+                    <div class="quiz-buttons">
+                        <button id="startQuiz" class="quiz-btn">Start Quiz</button>
+                        <button id="skipQuiz" class="quiz-btn skip-btn">Skip Quiz</button>
+                    </div>
+                </div>
+
+                <div id="quizContainer" class="quiz-section" style="display: none;">
+                    <div class="quiz-progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div id="questionContainer">
+                        <h3 id="question"></h3>
+                        <div id="options" class="quiz-options"></div>
+                    </div>
+                    <div class="quiz-navigation">
+                        <button id="backQuestion" class="quiz-btn back-btn">Back</button>
+                        <button id="nextQuestion" class="quiz-btn">Next</button>
+                        <button id="submitQuiz" class="quiz-btn" style="display: none;">Get Results</button>
+                        <button id="skipQuiz" class="quiz-btn skip-btn">Skip Quiz</button>
+                    </div>
+                </div>
+
+                <div id="quizResult" class="quiz-section" style="display: none;">
+                    <h2>Your Recommended Level</h2>
+                    <div class="result-content">
+                        <div class="result-level">
+                            <span id="resultLevel" class="level-badge"></span>
+                        </div>
+                        <p id="resultDescription" class="result-description"></p>
+                    </div>
+                    <div class="quiz-buttons">
+                        <button id="startLearning" class="quiz-btn">Start Learning</button>
+                        <button id="skipQuiz" class="quiz-btn skip-btn">Skip Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/courses.js"></script>
+</body>
+</html> 
