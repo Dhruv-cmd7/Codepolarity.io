@@ -49,6 +49,38 @@
         <a href="signin.html"><button class="button3">Sign in</button></a>
         <a href="signup.html"><button class="button2">Sign up</button></a>
       </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Mobile Menu -->
+      <div class="mobile-menu">
+        <div class="nav-links">
+          <div class="dropdown">
+            <button class="dropbtn" tabindex="0">
+              RESOURCES
+              <img src="../assets/images/caret-down.svg" height="15px" class="down-icon" />
+            </button>
+            <ul class="dropdown-content">
+              <li><a href="Courses.html">COURSES</a></li>
+              <li><a href="Notes.html">NOTES</a></li>
+            </ul>
+          </div>    
+
+          <a href="work_in_progress.html?feature=polaries-ai"><button>POLARIES AI</button></a>
+          <a href="typing_t.html"><button>TYPING TUTOR</button></a>
+          <a href=""><button>PRICING</button></a>
+          <a href="work_in_progress.html?feature=code-editor"><button>CODE EDITOR</button></a>
+        </div>
+        <div class="nav-right">
+          <a href="signin.html"><button class="button3">Sign in</button></a>
+          <a href="signup.html"><button class="button2">Sign up</button></a>
+        </div>
+      </div>
     </nav>
     <!--hero section 1 -->
 
@@ -321,4 +353,43 @@
 
 </footer>
 
+<script>
+  // Mobile menu functionality
+  const menuBtn = document.querySelector('.menu-btn');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  const dropBtns = document.querySelectorAll('.mobile-menu .dropbtn');
+
+  menuBtn.addEventListener('click', () => {
+    menuBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+  });
+
+  // Handle dropdowns in mobile menu
+  dropBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dropdown = btn.nextElementSibling;
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+      mobileMenu.classList.remove('active');
+      menuBtn.classList.remove('active');
+    }
+  });
+
+  // Close mobile menu when clicking a link
+  const mobileLinks = mobileMenu.querySelectorAll('a');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+      menuBtn.classList.remove('active');
+    });
+  });
+</script>
+
+</body>
 </html>
