@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work in Progress - Codepolarity.io</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/work_in_progress.css">
+</head>
+<body>
+    <div class="highlight-effect"></div>
+
+    <a href="Home_page.html" class="back-btn">
+        <img src="../assets/images/caret-down.svg" alt="Back" />Back
+    </a>
+
+    <div class="container">
+        <div class="logo">
+            <img src="../assets/images/logoC.svg" height="40px" alt="Codepolarity.io Logo">
+        </div>
+
+        <div class="content">
+            <div class="icon-container">
+                <div class="gear-icon">⚙️</div>
+            </div>
+            <h1 id="feature-title">Feature Coming Soon</h1>
+            <p id="feature-description">We're working hard to bring you something amazing!</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <p class="progress-text">Development in Progress</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get the feature type from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const featureType = urlParams.get('feature') || 'default';
+
+        // Update content based on feature type
+        const featureContent = {
+            'code-editor': {
+                title: 'Code Editor Coming Soon',
+                description: 'Our powerful browser-based code editor is under development. Get ready for a seamless coding experience!'
+            },
+            'polaries-ai': {
+                title: 'Polaries AI Coming Soon',
+                description: 'Our AI-powered coding assistant is being crafted to revolutionize your development workflow!'
+            },
+            'default': {
+                title: 'Feature Coming Soon',
+                description: 'We're working hard to bring you something amazing!'
+            } // Ensure this closing brace has no trailing comma
+        };
+
+        // Update page content
+        const content = featureContent[featureType] || featureContent.default;
+        document.getElementById('feature-title').textContent = content.title;
+        document.getElementById('feature-description').textContent = content.description;
+
+        // Update page title
+        document.title = `${content.title} - Codepolarity.io`;
+    </script>
+</body>
+</html> 
