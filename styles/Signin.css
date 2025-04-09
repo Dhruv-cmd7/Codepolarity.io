@@ -1,178 +1,169 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  
+
+}
+
+body {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: raleway;
+  color: white;
     
-  
-  }
-  
-  body {
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: raleway;
-    color: white;
-      
-    min-height: 100vh;
-    background-color: black;
-    background-position: center;
-  }
-  
-  .container {
-    text-align: center;
-  }
-  
-  .card {
-    background: rgba(59, 131, 246, 0.038);
-    border: 2px solid rgba(29, 79, 216, 0.153);
-    padding: 30px;
-    border-radius: 10px;
-    width: 350px;
-    /* box-shadow: 0 0 10px rgb(255, 255, 255); */
-  }
-  
-  .logo {
-    margin-bottom: 20px;
-    font-size: 30px;
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-  }
-  
-  .input-group {
-    display: flex;
-    gap: 10px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #1d4fd871;
-    border-radius: 5px;
-    background-color: #22222236;
-    color: white;
-    transition: border-color 0.3s;
-  }
-  
-  input:hover,
-  input:focus {
-    border-color: #1d4ed8;
-  }
-  
-  .btn {
-    width: 100%;
-    padding: 10px;
-    background-color: white;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .btn:hover {
-    background-color: #1d4ed8;
-    color: white;
-    transform: scale(1.1);
-  }
-  
-  .divider {
-    margin: 20px 0;
-    color: #777;
-  }
-  
-  .oauth-btn {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #1d4fd871;
-    border-radius: 10px;
-    background-color: #22222236;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, border-color 0.3s;
-  }
-  
-  .oauth-btn:hover {
-    background-color: #1d4ed8;
-    border-color: #1d4ed8;
-    transform: scale(1.1);
-  }
-  
-  .oauth-btn img {
-    margin-right: 10px;
-  }
-  
-  a {
-    color: #1d4ed8;
-    text-decoration: none;
-  }
-  
-  .footer {
-    margin-top: 20px;
-    font-size: 12px;
-    color: #777;
-  }
-  
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    color: var(--text-primary);
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    margin-bottom: 2rem;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-  }
-  
-  .back-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateY(-2px);
-  }
-  
-  .back-btn img {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.3s;
-    rotate: 90deg;
-  }
-  
-  .back-btn:hover img {
-    transform: scale(1.2);
-  }
-  
-  .highlight-effect {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(
-      circle at 50% 0%,
-      rgba(28, 117, 206, 0.375),
-      transparent 70%
-    );
-    pointer-events: none;
-    z-index: -1;
-  }
+  min-height: 100vh;
+  background-color: black;
+  background-position: center;
+}
+
+.container {
+  text-align: center;
+}
+
+.card {
+  background: rgba(59, 131, 246, 0.038);
+  border: 2px solid rgba(29, 79, 216, 0.153);
+  padding: 30px;
+  border-radius: 10px;
+  width: 350px;
+  /* box-shadow: 0 0 10px rgb(255, 255, 255); */
+}
+
+.logo {
+  margin-bottom: 20px;
+  font-size: 30px;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #1d4fd871;
+  border-radius: 5px;
+  background-color: #22222236;
+  color: white;
+  transition: border-color 0.3s;
+}
+
+input:hover,
+input:focus {
+  border-color: #1d4ed8;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn:hover {
+  background-color: #1d4ed8;
+  color: white;
+  transform: scale(1.1);
+}
+
+.divider {
+  margin: 20px 0;
+  color: #777;
+}
+
+.oauth-btn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #1d4fd871;
+  border-radius: 10px;
+  background-color: #22222236;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.oauth-btn:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: scale(1.1);
+}
+
+.oauth-btn img {
+  margin-right: 10px;
+}
+
+a {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #777;
+}
+
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.back-btn img {
+  width: 40px;
+  /* Adjust the size as needed */
+  height: 40px;
+  transition: transform 0.3s;
+  rotate: 90deg;
+}
+
+.back-btn img:hover {
+  transform: scale(2.2);
+  /* Slight zoom effect on hover */
+}
+
+.highlight-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(28, 117, 206, 0.375),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
