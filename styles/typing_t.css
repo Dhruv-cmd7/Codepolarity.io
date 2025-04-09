@@ -14,19 +14,137 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .container {
   width: 100%;
-  max-width: 48rem;
+  max-width: 64rem;
+}
+
+.main-content {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+}
+
+.typing-area {
+  flex: 1;
+  max-width: calc(100% - 240px);
+}
+
+.snippet-sidebar {
+  width: 220px;
+  background: rgba(59, 131, 246, 0.038);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  height: 500px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border: 1px solid rgba(29, 79, 216, 0.153);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.snippet-sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.snippet-sidebar.collapsed {
+  width: 50px;
+  padding: 1rem 0.5rem;
+  background: rgba(35, 207, 238, 0.05);
+}
+
+.snippet-sidebar.collapsed .sidebar-header h3,
+.snippet-sidebar.collapsed .category h4,
+.snippet-sidebar.collapsed .category ul {
+  display: none;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(29, 79, 216, 0.153);
+}
+
+.sidebar-header h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #23cfee;
+}
+
+#toggleSidebar {
+  background: none;
+  border: none;
+  color: #23cfee98;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+#toggleSidebar:hover {
+  color: #23cfee;
+  transform: scale(1.1);
+}
+
+.snippet-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.category h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #23cfee98;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.category ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category li {
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.category li:hover {
+  background: rgba(59, 131, 246, 0.1);
+  border-color: rgba(29, 79, 216, 0.2);
+  transform: translateX(3px);
+}
+
+.category li.active {
+  background: rgba(35, 207, 238, 0.2);
+  color: #23cfee;
+  border-color: rgba(35, 207, 238, 0.3);
+  font-weight: 500;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .title {
@@ -44,7 +162,7 @@ body {
 
 .mode-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 button {
@@ -75,7 +193,7 @@ button.active {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .timer-buttons {
@@ -83,10 +201,35 @@ button.active {
   gap: 0.5rem;
 }
 
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.zoom-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.zoom-buttons button {
+  padding: 0.25rem 0.75rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+#zoomLevel {
+  min-width: 4rem;
+  text-align: center;
+  color: #23cfee98;
+}
+
 .stats {
   display: flex;
   gap: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-size: 1.25rem;
 }
 
@@ -98,16 +241,24 @@ button.active {
   font-family: raleway;
   font-size: 1.125rem;
   line-height: 1.75;
-  padding: 2rem;
-  background: rgba(59, 131, 246, 0.038);
-  border: 2px solid rgba(29, 79, 216, 0.153);  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
   outline: none;
   cursor: text;
+  height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.text-display::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .text-display.code {
   white-space: pre;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .text-display.text {
@@ -132,12 +283,16 @@ button.active {
 }
 
 #resetButton {
-  background-color: #23cfee98;
-  padding: 0.5rem 1.5rem;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  color: #23cfee98;
 }
 
 #resetButton:hover {
-  background-color: #23cfee;
+  background: none;
+  color: #23cfee;
+  transform: scale(1.1);
 }
 
 .back-btn {
