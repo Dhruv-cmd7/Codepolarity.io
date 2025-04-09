@@ -291,29 +291,40 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 80px 20px;
   gap: 48px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .text-center {
   text-align: center;
   width: 100%;
   max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .text-center h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   line-height: 1.2;
+  text-align: center;
+  width: 100%;
 }
 
 .text-center .subtitle {
   font-size: 1.25rem;
   color: #77777a;
   margin-bottom: 2rem;
+  text-align: center;
+  width: 100%;
 }
 
 .highlight {
@@ -1068,5 +1079,159 @@ main {
 
   .logo {
     left: 20px;
+  }
+}
+
+/* User Reviews Section */
+.user-reviews {
+  padding: 100px 0;
+  background: transparent;
+  overflow: hidden;
+  position: relative;
+}
+
+.reviews-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.reviews-header h2 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  background: linear-gradient(to right, #60a7fa, #23d1ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.reviews-subtitle {
+  color: #77777a;
+  font-size: 1.25rem;
+}
+
+.reviews-track {
+  display: flex;
+  gap: 30px;
+  width: max-content;
+  animation: scrollReviews 30s linear infinite;
+  padding: 20px 0;
+}
+
+.review-card {
+  background: rgba(255, 255, 255, 0.034);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 15px;
+  padding: 30px;
+  width: 350px;
+  transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  background: rgba(96, 167, 250, 0.05);
+  border-color: rgba(96, 167, 250, 0.2);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(96, 167, 250, 0.3);
+}
+
+.user-info h4 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.user-info p {
+  color: #77777a;
+  font-size: 0.9rem;
+}
+
+.review-text {
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.rating {
+  color: #ffd700;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+@keyframes scrollReviews {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive styles for user reviews */
+@media (max-width: 1200px) {
+  .reviews-header h2 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .reviews-header h2 {
+    font-size: 2.5rem;
+  }
+  
+  .review-card {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-reviews {
+    padding: 60px 0;
+  }
+  
+  .reviews-header h2 {
+    font-size: 2rem;
+  }
+  
+  .reviews-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .review-card {
+    width: 280px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .review-card {
+    width: 250px;
+    padding: 15px;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .review-text {
+    font-size: 0.9rem;
   }
 }
