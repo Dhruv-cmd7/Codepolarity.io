@@ -12,11 +12,22 @@
     rel="stylesheet" />
   <link rel="icon" type="image/png" sizes="16x16" href="logo circle .svg" />
   <link rel="stylesheet" href="../styles/Home_page.css" />
+  <!-- Add Three.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- Add custom JavaScript -->
+  <script src="../scripts/home.js" defer></script>
 </head>
 
 <body>
 
   <div class="highlight-effect"></div>
+
+  <!-- Add 3D Model Container -->
+  <div id="model-container" class="model-container">
+    <canvas id="model-canvas"></canvas>
+  </div>
 
   <div class="container">
     <!-- Navigation -->
@@ -435,43 +446,42 @@
 
 </footer>
 
-<script>
-  // Mobile menu functionality
-  const menuBtn = document.querySelector('.menu-btn');
-  const mobileMenu = document.querySelector('.mobile-menu');
-  const dropBtns = document.querySelectorAll('.mobile-menu .dropbtn');
+<style>
+  .model-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+  }
 
-  menuBtn.addEventListener('click', () => {
-    menuBtn.classList.toggle('active');
-    mobileMenu.classList.toggle('active');
-  });
+  .model-container.visible {
+    opacity: 1;
+  }
 
-  // Handle dropdowns in mobile menu
-  dropBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const dropdown = btn.nextElementSibling;
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    });
-  });
+  #model-canvas {
+    width: 100%;
+    height: 100%;
+  }
 
-  // Close mobile menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-      mobileMenu.classList.remove('active');
-      menuBtn.classList.remove('active');
-    }
-  });
+  .code-editor-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
 
-  // Close mobile menu when clicking a link
-  const mobileLinks = mobileMenu.querySelectorAll('a');
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-      menuBtn.classList.remove('active');
-    });
-  });
-</script>
+  .ce-text {
+    position: relative;
+    z-index: 1;
+  }
+</style>
 
 </body>
 </html>

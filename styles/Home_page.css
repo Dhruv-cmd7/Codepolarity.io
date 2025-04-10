@@ -17,10 +17,15 @@ body {
 }
 
 .container {
+  background: transparent;
+  backdrop-filter: blur(10px);
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 24px;
+  position: relative;
+  z-index: 1;
 }
+
 
 /* Navigation */
 nav {
@@ -397,19 +402,98 @@ main {
 }
 
 .brand-scrolling {
-  overflow: visible;
+  overflow: hidden;
   white-space: nowrap;
-  padding: 40px 0;
+  padding: 60px 0;
   background: transparent;
   position: relative;
+  margin: 40px 0;
 }
+
 .brand-title {
-  font-size: 18px;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   color: #77777a;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
+
+.brand-track {
+  display: flex;
+  gap: 40px;
+  width: max-content;
+  animation: scrollBrands 20s linear infinite;
+  padding: 20px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 15px 25px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.brand:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(96, 167, 250, 0.2);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.brand img {
+  height: 45px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: grayscale(100%) brightness(150%);
+  transition: all 0.3s ease;
+}
+
+.brand:hover img {
+  filter: grayscale(0%) brightness(100%);
+  transform: scale(1.1);
+}
+
+@keyframes scrollBrands {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 20px));
+  }
+}
+
+/* Add a gradient overlay for smooth fade effect */
+.brand-scrolling::before,
+.brand-scrolling::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.brand-scrolling::before {
+  left: 0;
+  background: linear-gradient(to right, black, transparent);
+}
+
+.brand-scrolling::after {
+  right: 0;
+  background: linear-gradient(to left, black, transparent);
+}
+
 .brand-title2 {
   font-size: 18px;
   font-weight: bold;
@@ -417,35 +501,6 @@ main {
   /* margin-bottom: 30px; */
   color: #77777a;
   text-align: center;
-}
-
-.brand-track {
-  display: flex;
-  gap: 50px;
-  width: max-content;
-  animation: scrollBrands 15s linear infinite;
-}
-.brand:hover {
-  transform: scale(1.1);
-}
-.brand {
-  display: flex;
-  align-items: center;
-  
-}
-.brand img {
-  height: 60px;
-  max-width: 100%;
-  object-fit: contain;
-  fill: #dc700e;
-}
-@keyframes scrollBrands {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-40%);
-  }
 }
 
 .highlight {
@@ -1088,6 +1143,7 @@ main {
   background: transparent;
   overflow: hidden;
   position: relative;
+  margin: 40px 0;
 }
 
 .reviews-header {
@@ -1102,6 +1158,8 @@ main {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .reviews-subtitle {
@@ -1121,27 +1179,57 @@ main {
   background: rgba(255, 255, 255, 0.034);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 15px;
-  padding: 30px;
-  width: 350px;
-  transition: transform 0.3s ease;
+  padding: 20px;
+  width: 280px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  position: relative;
 }
 
 .review-card:hover {
   transform: translateY(-5px);
   background: rgba(96, 167, 250, 0.05);
   border-color: rgba(96, 167, 250, 0.2);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Add gradient overlay for smooth fade effect */
+.user-reviews::before,
+.user-reviews::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.user-reviews::before {
+  left: 0;
+  background: linear-gradient(to right, black, transparent);
+}
+
+.user-reviews::after {
+  right: 0;
+  background: linear-gradient(to left, black, transparent);
 }
 
 .review-header {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 15px;
 }
 
 .user-avatar {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(96, 167, 250, 0.3);
@@ -1149,25 +1237,25 @@ main {
 
 .user-info h4 {
   color: #ffffff;
-  font-size: 1.1rem;
-  margin-bottom: 5px;
+  font-size: 1rem;
+  margin-bottom: 3px;
 }
 
 .user-info p {
   color: #77777a;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .review-text {
   color: #ffffff;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 15px;
 }
 
 .rating {
   color: #ffd700;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   letter-spacing: 2px;
 }
 
@@ -1234,4 +1322,155 @@ main {
   .review-text {
     font-size: 0.9rem;
   }
+}
+
+/* Scroll Animation Classes */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Staggered animation delays for child elements */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0.1s; }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 0.15s; }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 0.2s; }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 0.25s; }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 0.3s; }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 0.35s; }
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Apply animations to specific sections */
+.code-editor-section {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.code-editor-section.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.brand-scrolling {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-scrolling.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.main-content {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-content.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.ai-features {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ai-features.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.user-reviews {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-reviews.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.platform {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.platform.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Animation for cards */
+.feature-card, .ai-card, .review-card {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s ease, 
+              background 0.3s ease, 
+              border-color 0.3s ease;
+}
+
+.feature-card.visible, .ai-card.visible, .review-card.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Ensure animations work with existing hover effects */
+.feature-card:hover, .ai-card:hover, .review-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 3D Model Container */
+.model-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.model-container.visible {
+  opacity: 0.7;
+}
+
+#model-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
