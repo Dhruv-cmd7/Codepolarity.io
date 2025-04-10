@@ -344,22 +344,22 @@ const textSnippets = {
 
 class KeyPolarity {
   constructor() {
+    this.initializeElements();
+    this.addEventListeners();
     this.mode = 'text';
-    this.currentText = '';
+    this.currentCategory = 'random';
     this.typedText = '';
     this.startTime = null;
     this.wpm = 0;
     this.accuracy = 100;
     this.isFinished = false;
     this.timerOption = 30;
-    this.timeLeft = 30;
+    this.timeLeft = this.timerOption;
     this.isActive = false;
     this.timerInterval = null;
-    this.zoomLevel = 100;
-    this.currentCategory = 'random';
-
-    this.initializeElements();
-    this.addEventListeners();
+    this.isResetting = false;
+    this.resetTimeout = null;
+    this.currentText = '';
     this.resetTest();
   }
 
@@ -419,7 +419,7 @@ class KeyPolarity {
   }
 
   selectSnippet(mode, category) {
-    if (mode === this.mode) {
+    if (mode === this.mode && !this.isResetting) {
       this.currentCategory = category;
       
       // Update active state in UI
@@ -431,35 +431,57 @@ class KeyPolarity {
         li.classList.toggle('active', li.textContent.toLowerCase() === category);
       });
       
-      this.resetTest();
+      this.debouncedReset();
     }
   }
 
   setMode(newMode) {
-    this.mode = newMode;
-    this.textMode.classList.toggle('active', newMode === 'text');
-    this.codeMode.classList.toggle('active', newMode === 'code');
-    this.textDisplay.classList.toggle('text', newMode === 'text');
-    this.textDisplay.classList.toggle('code', newMode === 'code');
+    if (this.mode !== newMode && !this.isResetting) {
+      this.mode = newMode;
+      this.textMode.classList.toggle('active', newMode === 'text');
+      this.codeMode.classList.toggle('active', newMode === 'code');
+      this.textDisplay.classList.toggle('text', newMode === 'text');
+      this.textDisplay.classList.toggle('code', newMode === 'code');
+      
+      // Reset category to random when switching modes
+      this.currentCategory = 'random';
+      
+      // Update active states in UI
+      this.textSnippets.querySelectorAll('li').forEach(li => {
+        li.classList.toggle('active', newMode === 'text' && li.textContent.toLowerCase() === 'random');
+      });
+      
+      this.codeSnippets.querySelectorAll('li').forEach(li => {
+        li.classList.toggle('active', newMode === 'code' && li.textContent.toLowerCase() === 'random');
+      });
+      
+      this.debouncedReset();
+    }
+  }
+
+  debouncedReset() {
+    if (this.resetTimeout) {
+      clearTimeout(this.resetTimeout);
+    }
     
-    // Reset category to random when switching modes
-    this.currentCategory = 'random';
-    
-    // Update active states in UI
-    this.textSnippets.querySelectorAll('li').forEach(li => {
-      li.classList.toggle('active', newMode === 'text' && li.textContent.toLowerCase() === 'random');
-    });
-    
-    this.codeSnippets.querySelectorAll('li').forEach(li => {
-      li.classList.toggle('active', newMode === 'code' && li.textContent.toLowerCase() === 'random');
-    });
-    
-    this.resetTest();
+    this.resetTimeout = setTimeout(() => {
+      this.resetTest();
+    }, 100);
   }
 
   resetTest() {
+    if (this.isResetting) return;
+    
+    this.isResetting = true;
+    
+    // Clear any existing intervals
+    clearInterval(this.timerInterval);
+    
+    // Get new snippet
     const snippets = this.mode === 'text' ? textSnippets[this.currentCategory] : codeSnippets[this.currentCategory];
     this.currentText = snippets[Math.floor(Math.random() * snippets.length)];
+    
+    // Reset state
     this.typedText = '';
     this.startTime = null;
     this.wpm = 0;
@@ -467,19 +489,28 @@ class KeyPolarity {
     this.isFinished = false;
     this.timeLeft = this.timerOption;
     this.isActive = false;
-    clearInterval(this.timerInterval);
-    this.updateDisplay();
-    this.updateStats();
+    
+    // Update UI
+    requestAnimationFrame(() => {
+      this.updateDisplay();
+      this.updateStats();
+      this.isResetting = false;
+    });
   }
 
   updateDisplay() {
-    this.textDisplay.innerHTML = this.currentText.split('').map((char, index) => {
-      let className = '';
+    const fragment = document.createDocumentFragment();
+    this.currentText.split('').forEach((char, index) => {
+      const span = document.createElement('span');
       if (index < this.typedText.length) {
-        className = this.typedText[index] === char ? 'correct' : 'incorrect';
+        span.className = this.typedText[index] === char ? 'correct' : 'incorrect';
       }
-      return `<span class="${className}">${char}</span>`;
-    }).join('');
+      span.textContent = char;
+      fragment.appendChild(span);
+    });
+    
+    this.textDisplay.innerHTML = '';
+    this.textDisplay.appendChild(fragment);
   }
 
   updateStats() {
