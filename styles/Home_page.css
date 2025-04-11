@@ -370,7 +370,7 @@ main {
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
+  /* transform: translateY(-5px); */
   background: rgba(255, 255, 255, 0.05);
   transform: scale(1.1);
 }
