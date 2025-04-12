@@ -744,7 +744,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('backQuestion').addEventListener('click', goBack);
     document.getElementById('nextQuestion').addEventListener('click', goNext);
     document.getElementById('submitQuiz').addEventListener('click', showResult);
-    document.getElementById('skipQuiz').addEventListener('click', skipQuiz);
+    document.getElementById('skipQuizIntro').addEventListener('click', skipQuiz);
+    document.getElementById('skipQuizQuestion').addEventListener('click', skipQuiz);
+    document.getElementById('skipQuizResult').addEventListener('click', skipQuiz);
     document.getElementById('startLearning').addEventListener('click', closeQuizModal);
     
     // Show quiz modal when page loads
