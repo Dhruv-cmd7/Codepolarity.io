@@ -8,94 +8,168 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
     rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-
-
-    <a href="Home_page.html" class="back-btn">
-      <img src="../assets/images/caret-down.svg" alt="Back" />Back
-    </a>
-  <div class="container">
-    <div class="header">
-      <h1 class="title">
-        <img src="../assets/images/keypolarity.svg" height="50px" alt="">  
-      </h1>
-      <div class="mode-buttons">
-        <button id="textMode" class="active">Text</button>
-        <button id="codeMode">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
-          Code
+  <div class="app-container">
+    <nav class="top-nav">
+      <a href="Home_page.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back</span>
+      </a>
+      <div class="nav-title">
+        <img src="../assets/images/keypolarity.svg" height="40px" alt="KeyPolarity">
+      </div>
+      <div class="nav-controls">
+        <button id="themeToggle" class="icon-btn">
+          <i class="fas fa-moon"></i>
         </button>
-        <button id="resetButton">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <button id="settingsBtn" class="icon-btn">
+          <i class="fas fa-cog"></i>
         </button>
       </div>
-    </div>
+    </nav>
 
-    <div class="main-content">
-      <div class="typing-area">
-        <div class="timer-options">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4"></path><path d="M12 14v-4"></path><circle cx="12" cy="14" r="8"></circle></svg>
-          <div class="timer-buttons">
-            <button data-time="15">15s</button>
-            <button data-time="30" class="active">30s</button>
-            <button data-time="60">60s</button>
-            <button data-time="120">120s</button>
+    <main class="main-content">
+      <div class="typing-container">
+        <div class="stats-bar">
+          <div class="stat-card">
+            <i class="fas fa-tachometer-alt"></i>
+            <div class="stat-info">
+              <span class="stat-value" id="wpm">0</span>
+              <span class="stat-label">WPM</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-bullseye"></i>
+            <div class="stat-info">
+              <span class="stat-value" id="accuracy">100</span>
+              <span class="stat-label">Accuracy</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <div class="stat-info">
+              <span class="stat-value" id="timeLeft">30</span>
+              <span class="stat-label">Seconds</span>
+            </div>
           </div>
         </div>
 
-        <div class="zoom-controls">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-          <div class="zoom-buttons">
-            <button id="zoomOut">-</button>
-            <span id="zoomLevel">100%</span>
-            <button id="zoomIn">+</button>
-          </div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">WPM: <span id="wpm">0</span></div>
-          <div class="stat">Accuracy: <span id="accuracy">100</span>%</div>
-          <div class="stat">Time: <span id="timeLeft">30</span>s</div>
-        </div>
-
-        <div id="textDisplay" class="text-display" tabindex="0"></div>
-
-        <div class="controls">
-        </div>
-      </div>
-
-      <div class="snippet-sidebar">
-        <div class="sidebar-header">
-          <h3>Snippets</h3>
-          <button id="toggleSidebar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <div class="mode-selector">
+          <button id="textMode" class="mode-btn active">
+            <i class="fas fa-font"></i>
+            <span>Text</span>
+          </button>
+          <button id="codeMode" class="mode-btn">
+            <i class="fas fa-code"></i>
+            <span>Code</span>
           </button>
         </div>
-        <div class="snippet-categories">
-          <div class="category">
-            <h4>Text</h4>
-            <ul id="textSnippets">
-              <li class="active">Random</li>
-              <li>Nature</li>
-              <li>Technology</li>
-              <li>Literature</li>
-              <li>Science</li>
-            </ul>
+
+        <div class="timer-selector">
+          <div class="timer-buttons">
+            <button data-time="15" class="timer-btn">15s</button>
+            <button data-time="30" class="timer-btn active">30s</button>
+            <button data-time="60" class="timer-btn">60s</button>
+            <button data-time="120" class="timer-btn">120s</button>
           </div>
-          <div class="category">
-            <h4>Code</h4>
-            <ul id="codeSnippets">
-              <li class="active">Random</li>
-              <li>JavaScript</li>
-              <li>Python</li>
-              <li>Java</li>
-              <li>C++</li>
-            </ul>
+        </div>
+
+        <div class="typing-area">
+          <div id="textDisplay" class="text-display" tabindex="0"></div>
+          <div class="keyboard-hints">
+            <div class="current-key">
+              <span>Current Key:</span>
+              <span id="currentKeyDisplay">-</span>
+            </div>
+            <div class="finger-position">
+              <span>Finger:</span>
+              <span id="fingerPosition">-</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <button id="resetButton" class="control-btn">
+            <i class="fas fa-redo"></i>
+            <span>Reset</span>
+          </button>
+          <div class="zoom-controls">
+            <button id="zoomOut" class="zoom-btn">
+              <i class="fas fa-search-minus"></i>
+            </button>
+            <span id="zoomLevel">100%</span>
+            <button id="zoomIn" class="zoom-btn">
+              <i class="fas fa-search-plus"></i>
+            </button>
           </div>
         </div>
       </div>
-    </div>
+
+      <aside class="snippet-panel">
+        <div class="panel-header">
+          <h3>Practice Snippets</h3>
+          <button id="toggleSidebar" class="toggle-btn">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+        
+        <div class="snippet-categories">
+          <div class="category-section">
+            <h4>Text Categories</h4>
+            <ul id="textSnippets" class="snippet-list">
+              <li class="snippet-item active">
+                <i class="fas fa-random"></i>
+                <span>Random</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fas fa-tree"></i>
+                <span>Nature</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fas fa-microchip"></i>
+                <span>Technology</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fas fa-book"></i>
+                <span>Literature</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fas fa-flask"></i>
+                <span>Science</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="category-section">
+            <h4>Code Categories</h4>
+            <ul id="codeSnippets" class="snippet-list">
+              <li class="snippet-item active">
+                <i class="fas fa-random"></i>
+                <span>Random</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fab fa-js"></i>
+                <span>JavaScript</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fab fa-python"></i>
+                <span>Python</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fab fa-java"></i>
+                <span>Java</span>
+              </li>
+              <li class="snippet-item">
+                <i class="fas fa-code"></i>
+                <span>C++</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </main>
   </div>
   <script src="../scripts/typing_t.js"></script>
 </body>
