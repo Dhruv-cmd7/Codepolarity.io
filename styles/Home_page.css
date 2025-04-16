@@ -232,7 +232,7 @@ ai-logo {
   background: #1d4ed8;
   transition: transform 0.3s ease;
 
-  /* transform: scale(1.1);; */
+  transform: scale(1.1);
 }
 
 /* Hero section 1 */
@@ -1395,17 +1395,17 @@ main {
   transform: translateY(0) scale(1);
 }
 
-.ai-features {
+/* .ai-features {
   opacity: 0;
   transform: translateY(60px) scale(0.95);
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
               transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
+} */
 
-.ai-features.visible {
+/* .ai-features.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
+} */
 
 .user-reviews {
   opacity: 0;
@@ -1434,22 +1434,20 @@ main {
 /* Animation for cards */
 .feature-card, .ai-card, .review-card {
   opacity: 0;
-  transform: translateY(50px) scale(0.95);
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+  /* transform: translateY(50px) scale(0.95); */
+  /* transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
               transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.3s ease, 
               background 0.3s ease, 
-              border-color 0.3s ease;
+              border-color 0.3s ease; */
 }
 
 .feature-card.visible, .ai-card.visible, .review-card.visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-}
+  transition: transform 0.3s ease}
 
-/* Ensure animations work with existing hover effects */
 .feature-card:hover, .ai-card:hover, .review-card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.1);
 }
 
 /* 3D Model Container */
