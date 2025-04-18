@@ -349,17 +349,19 @@ class KeyPolarity {
     this.mode = 'text';
     this.currentCategory = 'random';
     this.typedText = '';
+    this.currentIndex = 0;
     this.startTime = null;
     this.wpm = 0;
     this.accuracy = 100;
     this.isFinished = false;
-    this.timerOption = 30;
-    this.timeLeft = this.timerOption;
+    this.timeLimit = 30; // Default time limit in seconds
+    this.timeLeft = this.timeLimit;
     this.isActive = false;
     this.timerInterval = null;
     this.isResetting = false;
     this.resetTimeout = null;
-    this.currentText = '';
+    this.targetText = '';
+    this.zoomLevel = 100;
     this.resetTest();
   }
 
@@ -372,13 +374,20 @@ class KeyPolarity {
     this.accuracyDisplay = document.getElementById('accuracy');
     this.timeLeftDisplay = document.getElementById('timeLeft');
     this.timerButtons = document.querySelectorAll('.timer-buttons button');
-    this.zoomIn = document.getElementById('zoomIn');
-    this.zoomOut = document.getElementById('zoomOut');
+    this.zoomButtons = document.querySelectorAll('.zoom-buttons button');
     this.zoomLevelDisplay = document.getElementById('zoomLevel');
     this.toggleSidebar = document.getElementById('toggleSidebar');
     this.snippetSidebar = document.querySelector('.snippet-sidebar');
     this.textSnippets = document.getElementById('textSnippets');
     this.codeSnippets = document.getElementById('codeSnippets');
+    
+    // Add popup elements
+    this.resultPopup = document.getElementById('resultPopup');
+    this.resultWpm = document.getElementById('resultWpm');
+    this.resultAccuracy = document.getElementById('resultAccuracy');
+    this.resultTime = document.getElementById('resultTime');
+    this.retryButton = document.getElementById('retryButton');
+    this.closePopup = document.getElementById('closePopup');
   }
 
   addEventListeners() {
@@ -388,14 +397,24 @@ class KeyPolarity {
     this.textDisplay.addEventListener('keydown', (e) => this.handleKeyDown(e));
     this.timerButtons.forEach(button => {
       button.addEventListener('click', () => {
-        this.timerOption = parseInt(button.dataset.time);
-        this.timerButtons.forEach(b => b.classList.remove('active'));
+        const time = parseInt(button.dataset.time);
+        this.timeLimit = time;
+        this.timeLeft = time;
+        
+        // Update active state
+        this.timerButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
+        
+        // Reset the test with new time limit
         this.resetTest();
       });
     });
-    this.zoomIn.addEventListener('click', () => this.adjustZoom(10));
-    this.zoomOut.addEventListener('click', () => this.adjustZoom(-10));
+    this.zoomButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const delta = parseInt(button.dataset.delta);
+        this.adjustZoom(delta);
+      });
+    });
     this.toggleSidebar.addEventListener('click', () => this.toggleSidebarView());
     
     // Add event listeners for snippet selection
@@ -405,6 +424,23 @@ class KeyPolarity {
     
     this.codeSnippets.querySelectorAll('li').forEach(li => {
       li.addEventListener('click', () => this.selectSnippet('code', li.textContent.toLowerCase()));
+    });
+
+    // Add popup event listeners
+    this.retryButton.addEventListener('click', () => {
+      this.hideResultPopup();
+      this.resetTest();
+    });
+
+    this.closePopup.addEventListener('click', () => {
+      this.hideResultPopup();
+    });
+
+    // Close popup when clicking outside
+    this.resultPopup.addEventListener('click', (e) => {
+      if (e.target === this.resultPopup) {
+        this.hideResultPopup();
+      }
     });
   }
 
@@ -475,19 +511,23 @@ class KeyPolarity {
     this.isResetting = true;
     
     // Clear any existing intervals
-    clearInterval(this.timerInterval);
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
     
     // Get new snippet
     const snippets = this.mode === 'text' ? textSnippets[this.currentCategory] : codeSnippets[this.currentCategory];
-    this.currentText = snippets[Math.floor(Math.random() * snippets.length)];
+    this.targetText = snippets[Math.floor(Math.random() * snippets.length)];
     
     // Reset state
     this.typedText = '';
+    this.currentIndex = 0;
     this.startTime = null;
     this.wpm = 0;
     this.accuracy = 100;
     this.isFinished = false;
-    this.timeLeft = this.timerOption;
+    this.timeLeft = this.timeLimit;
     this.isActive = false;
     
     // Update UI
@@ -500,9 +540,9 @@ class KeyPolarity {
 
   updateDisplay() {
     const fragment = document.createDocumentFragment();
-    this.currentText.split('').forEach((char, index) => {
+    this.targetText.split('').forEach((char, index) => {
       const span = document.createElement('span');
-      if (index < this.typedText.length) {
+      if (index < this.currentIndex) {
         span.className = this.typedText[index] === char ? 'correct' : 'incorrect';
       }
       span.textContent = char;
@@ -514,24 +554,47 @@ class KeyPolarity {
   }
 
   updateStats() {
-    this.wpmDisplay.textContent = this.wpm;
-    this.accuracyDisplay.textContent = this.accuracy;
-    this.timeLeftDisplay.textContent = this.timeLeft;
+    if (!this.startTime) return;
+    
+    const elapsed = (Date.now() - this.startTime) / 1000;
+    const typed = this.currentIndex;
+    const target = this.targetText.length;
+    
+    const wpm = this.calculateWPM(typed, elapsed);
+    const accuracy = this.calculateAccuracy(typed, target);
+    
+    this.wpmDisplay.textContent = Math.round(wpm);
+    this.accuracyDisplay.textContent = Math.round(accuracy);
+    this.timeLeftDisplay.textContent = Math.max(0, Math.ceil(this.timeLimit - elapsed));
+    
+    // Show popup when timer reaches zero
+    if (elapsed >= this.timeLimit && !this.isFinished) {
+      this.isFinished = true;
+      this.isActive = false;
+      if (this.timerInterval) {
+        clearInterval(this.timerInterval);
+        this.timerInterval = null;
+      }
+      this.showResultPopup();
+    }
   }
 
   calculateWPM(typed, elapsed) {
-    const words = typed.trim().split(/\s+/).length;
-    const minutes = elapsed / 60000;
-    return Math.round(words / minutes);
+    if (elapsed === 0) return 0;
+    // Calculate WPM based on characters typed (5 characters = 1 word)
+    const words = typed / 5;
+    const minutes = elapsed / 60;
+    return words / minutes;
   }
 
   calculateAccuracy(typed, target) {
+    if (typed === 0) return 100;
     let correct = 0;
-    const minLength = Math.min(typed.length, target.length);
+    const minLength = Math.min(typed, target);
     for (let i = 0; i < minLength; i++) {
-      if (typed[i] === target[i]) correct++;
+      if (this.typedText[i] === this.targetText[i]) correct++;
     }
-    return Math.round((correct / typed.length) * 100) || 100;
+    return (correct / typed) * 100;
   }
 
   getIndentation(text, currentPosition) {
@@ -550,24 +613,36 @@ class KeyPolarity {
   handleKeyDown(e) {
     if (this.isFinished) return;
 
+    // Prevent space bar from scrolling the page
+    if (e.key === ' ') {
+      e.preventDefault();
+    }
+
     if (!this.isActive) {
       this.isActive = true;
       this.startTime = Date.now();
+      
+      // Start the timer
       this.timerInterval = setInterval(() => {
-        this.timeLeft--;
+        const elapsed = (Date.now() - this.startTime) / 1000;
+        this.timeLeft = Math.max(0, this.timeLimit - elapsed);
         this.updateStats();
-        if (this.timeLeft === 0) {
+        
+        if (elapsed >= this.timeLimit) {
           this.isFinished = true;
           this.isActive = false;
           clearInterval(this.timerInterval);
+          this.timerInterval = null;
+          this.showResultPopup();
         }
       }, 1000);
     }
 
     if (e.key === 'Enter' && this.mode === 'code') {
       e.preventDefault();
-      const indentation = this.getIndentation(this.currentText, this.typedText.length);
+      const indentation = this.getIndentation(this.targetText, this.currentIndex);
       this.typedText += '\n' + indentation;
+      this.currentIndex += '\n'.length + indentation.length;
       this.updateDisplay();
       this.scrollToCurrentPosition();
       return;
@@ -576,6 +651,7 @@ class KeyPolarity {
     if (e.key === 'Tab' && this.mode === 'code') {
       e.preventDefault();
       this.typedText += '  ';
+      this.currentIndex += 2;
       this.updateDisplay();
       this.scrollToCurrentPosition();
       return;
@@ -583,19 +659,17 @@ class KeyPolarity {
 
     if (e.key === 'Backspace') {
       if (this.typedText.length > 0) {
-        const lastCompleteWordIndex = this.typedText.lastIndexOf(' ');
-        const lastChar = this.typedText[this.typedText.length - 1];
-        if (lastChar === ' ' || this.typedText.length <= lastCompleteWordIndex + 1) {
-          this.typedText = this.typedText.slice(0, -1);
-          this.updateDisplay();
-          this.scrollToCurrentPosition();
-        }
+        this.typedText = this.typedText.slice(0, -1);
+        this.currentIndex = Math.max(0, this.currentIndex - 1);
+        this.updateDisplay();
+        this.scrollToCurrentPosition();
       }
       return;
     }
 
     if (e.key.length === 1) {
       this.typedText += e.key;
+      this.currentIndex++;
       this.updateDisplay();
       this.scrollToCurrentPosition();
 
@@ -603,15 +677,16 @@ class KeyPolarity {
         this.startTime = Date.now();
       }
 
-      const elapsed = Date.now() - this.startTime;
-      this.wpm = this.calculateWPM(this.typedText, elapsed);
-      this.accuracy = this.calculateAccuracy(this.typedText, this.currentText);
       this.updateStats();
 
-      if (this.typedText === this.currentText) {
+      if (this.currentIndex === this.targetText.length) {
         this.isFinished = true;
         this.isActive = false;
-        clearInterval(this.timerInterval);
+        if (this.timerInterval) {
+          clearInterval(this.timerInterval);
+          this.timerInterval = null;
+        }
+        this.showResultPopup();
       }
     }
   }
@@ -637,6 +712,26 @@ class KeyPolarity {
     this.zoomLevel = Math.max(50, Math.min(200, this.zoomLevel + delta));
     this.textDisplay.style.fontSize = `${this.zoomLevel}%`;
     this.zoomLevelDisplay.textContent = `${this.zoomLevel}%`;
+  }
+
+  showResultPopup() {
+    // Update popup values
+    this.resultWpm.textContent = this.wpmDisplay.textContent;
+    this.resultAccuracy.textContent = this.accuracyDisplay.textContent;
+    this.resultTime.textContent = this.timeLeftDisplay.textContent;
+    
+    // Show popup with animation
+    this.resultPopup.style.display = 'flex';
+    setTimeout(() => {
+      this.resultPopup.classList.add('show');
+    }, 10);
+  }
+
+  hideResultPopup() {
+    this.resultPopup.classList.remove('show');
+    setTimeout(() => {
+      this.resultPopup.style.display = 'none';
+    }, 300);
   }
 }
 

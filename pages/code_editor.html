@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor - Codepolarity</title>
+    <link rel="stylesheet" href="../styles/code_editor.css">
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div class="editor-container">
+        <!-- Top Toolbar -->
+        <div class="toolbar">
+            <div class="left-toolbar">
+                <a href="Home_page.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <select id="language-selector">
+                    <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="java">Java</option>
+                    <option value="cpp">C++</option>
+                </select>
+                <button id="run-button"><i class="fas fa-play"></i> Run</button>
+                <button id="save-button"><i class="fas fa-save"></i> Save</button>
+            </div>
+            <div class="right-toolbar">
+                <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+                <button id="split-view-toggle"><i class="fas fa-columns"></i></button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Editor Section -->
+            <div class="editor-section">
+                <div id="editor" class="monaco-editor"></div>
+            </div>
+
+            <!-- Split View Section (initially hidden) -->
+            <div class="split-view-section" style="display: none;">
+                <div class="split-view-controls">
+                    <select id="split-view-mode">
+                        <option value="notes">Notes</option>
+                        <option value="typing">Typing Practice</option>
+                    </select>
+                </div>
+                <div id="split-view-content">
+                    <!-- Content will be dynamically loaded based on selected mode -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <div class="output-header">
+                <h3>Output</h3>
+                <button id="clear-output"><i class="fas fa-trash"></i></button>
+            </div>
+            <div id="output-content"></div>
+        </div>
+    </div>
+
+    <script src="../scripts/code_editor.js"></script>
+</body>
+</html> 
