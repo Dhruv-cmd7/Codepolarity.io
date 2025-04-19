@@ -350,16 +350,8 @@ class KeyPolarity {
     this.currentCategory = 'random';
     this.typedText = '';
     this.currentIndex = 0;
-    this.startTime = null;
-    this.wpm = 0;
-    this.accuracy = 100;
     this.isFinished = false;
-    this.timeLimit = 30; // Default time limit in seconds
-    this.timeLeft = this.timeLimit;
     this.isActive = false;
-    this.timerInterval = null;
-    this.isResetting = false;
-    this.resetTimeout = null;
     this.targetText = '';
     this.zoomLevel = 100;
     this.resetTest();
@@ -370,24 +362,12 @@ class KeyPolarity {
     this.codeMode = document.getElementById('codeMode');
     this.textDisplay = document.getElementById('textDisplay');
     this.resetButton = document.getElementById('resetButton');
-    this.wpmDisplay = document.getElementById('wpm');
-    this.accuracyDisplay = document.getElementById('accuracy');
-    this.timeLeftDisplay = document.getElementById('timeLeft');
-    this.timerButtons = document.querySelectorAll('.timer-buttons button');
     this.zoomButtons = document.querySelectorAll('.zoom-buttons button');
     this.zoomLevelDisplay = document.getElementById('zoomLevel');
     this.toggleSidebar = document.getElementById('toggleSidebar');
     this.snippetSidebar = document.querySelector('.snippet-sidebar');
     this.textSnippets = document.getElementById('textSnippets');
     this.codeSnippets = document.getElementById('codeSnippets');
-    
-    // Add popup elements
-    this.resultPopup = document.getElementById('resultPopup');
-    this.resultWpm = document.getElementById('resultWpm');
-    this.resultAccuracy = document.getElementById('resultAccuracy');
-    this.resultTime = document.getElementById('resultTime');
-    this.retryButton = document.getElementById('retryButton');
-    this.closePopup = document.getElementById('closePopup');
   }
 
   addEventListeners() {
@@ -395,20 +375,6 @@ class KeyPolarity {
     this.codeMode.addEventListener('click', () => this.setMode('code'));
     this.resetButton.addEventListener('click', () => this.resetTest());
     this.textDisplay.addEventListener('keydown', (e) => this.handleKeyDown(e));
-    this.timerButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const time = parseInt(button.dataset.time);
-        this.timeLimit = time;
-        this.timeLeft = time;
-        
-        // Update active state
-        this.timerButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        
-        // Reset the test with new time limit
-        this.resetTest();
-      });
-    });
     this.zoomButtons.forEach(button => {
       button.addEventListener('click', () => {
         const delta = parseInt(button.dataset.delta);
@@ -424,23 +390,6 @@ class KeyPolarity {
     
     this.codeSnippets.querySelectorAll('li').forEach(li => {
       li.addEventListener('click', () => this.selectSnippet('code', li.textContent.toLowerCase()));
-    });
-
-    // Add popup event listeners
-    this.retryButton.addEventListener('click', () => {
-      this.hideResultPopup();
-      this.resetTest();
-    });
-
-    this.closePopup.addEventListener('click', () => {
-      this.hideResultPopup();
-    });
-
-    // Close popup when clicking outside
-    this.resultPopup.addEventListener('click', (e) => {
-      if (e.target === this.resultPopup) {
-        this.hideResultPopup();
-      }
     });
   }
 

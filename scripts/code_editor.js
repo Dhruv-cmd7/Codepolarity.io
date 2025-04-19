@@ -54,18 +54,6 @@ require(['vs/editor/editor.main'], function() {
             splitViewContent.innerHTML = `
                 <textarea class="notes-editor" placeholder="Take notes here..."></textarea>
             `;
-        } else if (mode === 'typing') {
-            splitViewContent.innerHTML = `
-                <div class="typing-practice">
-                    <div class="typing-text"></div>
-                    <textarea class="typing-input" placeholder="Start typing..."></textarea>
-                    <div class="typing-stats">
-                        <span>Speed: <span class="wpm">0</span> WPM</span>
-                        <span>Accuracy: <span class="accuracy">100%</span></span>
-                    </div>
-                </div>
-            `;
-            initializeTypingPractice();
         }
     });
 
@@ -156,57 +144,6 @@ require(['vs/editor/editor.main'], function() {
             } catch (error) {
                 reject(error);
             }
-        });
-    }
-
-    // Typing practice functionality
-    function initializeTypingPractice() {
-        const typingText = document.querySelector('.typing-text');
-        const typingInput = document.querySelector('.typing-input');
-        const wpmDisplay = document.querySelector('.wpm');
-        const accuracyDisplay = document.querySelector('.accuracy');
-
-        // Sample code snippets for typing practice
-        const codeSnippets = [
-            'function greet(name) {\n  return `Hello, ${name}!`;\n}',
-            'const numbers = [1, 2, 3, 4, 5];\nconst doubled = numbers.map(n => n * 2);',
-            'class Person {\n  constructor(name) {\n    this.name = name;\n  }\n}'
-        ];
-
-        let currentSnippet = codeSnippets[0];
-        let startTime;
-        let totalChars = 0;
-        let correctChars = 0;
-
-        typingText.textContent = currentSnippet;
-        typingInput.value = '';
-
-        typingInput.addEventListener('input', () => {
-            if (!startTime) {
-                startTime = Date.now();
-            }
-
-            const inputText = typingInput.value;
-            const expectedText = currentSnippet.substring(0, inputText.length);
-            
-            // Calculate accuracy
-            let correct = 0;
-            for (let i = 0; i < inputText.length; i++) {
-                if (inputText[i] === expectedText[i]) {
-                    correct++;
-                }
-            }
-            
-            correctChars = correct;
-            totalChars = inputText.length;
-            
-            // Calculate WPM
-            const timeElapsed = (Date.now() - startTime) / 60000; // in minutes
-            const wpm = Math.round((totalChars / 5) / timeElapsed);
-            
-            // Update displays
-            wpmDisplay.textContent = wpm;
-            accuracyDisplay.textContent = `${Math.round((correctChars / totalChars) * 100)}%`;
         });
     }
 }); 
