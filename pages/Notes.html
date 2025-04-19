@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodePolarity - Free Coding Notes</title>
+    <title>CodePolarity - Quick Reference</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="../styles/notes.css">
     <script src="../scripts/config.js"></script>
 </head>
@@ -22,54 +23,70 @@
         <!-- Header Section -->
         <header class="notes-header">
             <div class="header-content">
-                <h1 class="ce-gradient">Coding Notes & Resources</h1>
-                <p class="subtitle">Free coding notes and resources</p>
-            </div>
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search for notes, topics, or languages...">
-                </div>
-                <div class="filter-controls">
-                    <div class="filter-section">
-                        <select id="languageFilter" class="filter-select">
-                            <option value="all">All Programming Languages</option>
-                            <option value="python">Python</option>
-                            <option value="javascript">JavaScript</option>
-                            <option value="java">Java</option>
-                            <option value="cpp">C++</option>
-                            <option value="csharp">C#</option>
-                        </select>
-                    </div>
-                    <div class="filter-section">
-                        <select id="categoryFilter" class="filter-select">
-                            <option value="all">All Categories</option>
-                            <option value="basics">Basics</option>
-                            <option value="advanced">Advanced</option>
-                            <option value="algorithms">Algorithms</option>
-                            <option value="data-structures">Data Structures</option>
-                            <option value="frameworks">Frameworks</option>
-                        </select>
-                    </div>
-                </div>
+                <h1 class="ce-gradient">Quick Reference</h1>
+                <p class="subtitle">Programming languages and tools cheat sheets</p>
             </div>
         </header>
 
         <!-- Main Content -->
         <div class="content-wrapper">
-            <!-- Notes Grid -->
-            <div id="notesContainer" class="notes-container">
-                <!-- Notes will be dynamically added here -->
-            </div>
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-search">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search languages or topics...">
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">Languages</h3>
+                        <ul class="nav-list" id="languagesList">
+                            <!-- Languages will be dynamically added here -->
+                        </ul>
+                    </div>
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">Tools</h3>
+                        <ul class="nav-list" id="toolsList">
+                            <!-- Tools will be dynamically added here -->
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
 
-            <!-- Error Message Container -->
-            <div id="errorMessage" class="error-message" style="display: none;">
-                <i class="fas fa-exclamation-circle"></i>
-                <span id="errorText"></span>
-            </div>
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <div class="content-header">
+                    <h2 id="currentSection">Select a language or tool</h2>
+                    <div class="content-actions">
+                        <button class="copy-btn" id="copyBtn">
+                            <i class="fas fa-copy"></i>
+                            Copy All
+                        </button>
+                        <button class="theme-toggle" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                            Dark Mode
+                        </button>
+                    </div>
+                </div>
+                <div class="reference-content" id="referenceContent">
+                    <!-- Reference content will be dynamically added here -->
+                </div>
+            </main>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-sql.min.js"></script>
     <script src="../scripts/notes.js"></script>
 </body>
 </html> 
