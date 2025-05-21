@@ -5,70 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KeyPolarity - Modern Typing Tutor</title>
   <link rel="stylesheet" href="../styles/typing_t.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-
-
-    <a href="Home_page.html" class="back-btn">
-      <img src="../assets/images/caret-down.svg" alt="Back" />Back
-    </a>
   <div class="container">
-    <div class="header">
+    <nav class="top-nav">
+      <a href="Home_page.html" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
       <h1 class="title">
-        <img src="../assets/images/keypolarity.svg" height="50px" alt="">  
+        <img src="../assets/images/keypolarity.svg" height="40px" alt="KeyPolarity">
       </h1>
-      <div class="mode-buttons">
-        <button id="textMode" class="active">Text</button>
-        <button id="codeMode">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
-          Code
-        </button>
-        <button id="resetButton">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-        </button>
-      </div>
-    </div>
+    </nav>
 
     <div class="main-content">
-      <div class="typing-area">
-        <div class="timer-options">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4"></path><path d="M12 14v-4"></path><circle cx="12" cy="14" r="8"></circle></svg>
-          <div class="timer-buttons">
-            <button data-time="15">15s</button>
-            <button data-time="30" class="active">30s</button>
-            <button data-time="60">60s</button>
-            <button data-time="120">120s</button>
-          </div>
-        </div>
-
-        <div class="zoom-controls">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-          <div class="zoom-buttons">
-            <button id="zoomOut" data-delta="-10">-</button>
-            <span id="zoomLevel">100%</span>
-            <button id="zoomIn" data-delta="10">+</button>
-          </div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">WPM: <span id="wpm">0</span></div>
-          <div class="stat">Accuracy: <span id="accuracy">100</span>%</div>
-          <div class="stat">Time: <span id="timeLeft">30</span>s</div>
-        </div>
-
-        <div id="textDisplay" class="text-display" tabindex="0"></div>
-
-        <div class="controls">
-        </div>
-      </div>
-
-      <div class="snippet-sidebar">
+      <!-- Left Sidebar -->
+      <aside class="snippet-sidebar">
         <div class="sidebar-header">
           <h3>Snippets</h3>
-          <button id="toggleSidebar">
+          <button id="toggleLeftSidebar">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
           </button>
         </div>
@@ -94,12 +49,77 @@
             </ul>
           </div>
         </div>
+      </aside>
+
+      <!-- Floating Toggle Buttons -->
+      <button class="sidebar-toggle left" id="toggleLeftSidebarFloat" data-tooltip="Show Snippets">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+
+      <!-- Main Typing Area -->
+      <div class="typing-area">
+        <div id="textDisplay" class="text-display" tabindex="0"></div>
       </div>
+
+      <!-- Right Sidebar -->
+      <aside class="controls-sidebar">
+        <div class="sidebar-header">
+          <h3>Controls</h3>
+          <button id="toggleRightSidebar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+        
+        <div class="controls-content">
+          <div class="mode-selector">
+            <button id="textMode" class="active">Text</button>
+            <button id="codeMode">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+              Code
+            </button>
+          </div>
+
+          <div class="timer-options">
+            <h4>Timer</h4>
+            <div class="timer-buttons">
+              <button data-time="15">15s</button>
+              <button data-time="30" class="active">30s</button>
+              <button data-time="60">60s</button>
+              <button data-time="120">120s</button>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">WPM: <span id="wpm">0</span></div>
+            <div class="stat">Accuracy: <span id="accuracy">100</span>%</div>
+            <div class="stat">Time: <span id="timeLeft">30</span>s</div>
+          </div>
+
+          <div class="zoom-controls">
+            <h4>Zoom</h4>
+            <div class="zoom-buttons">
+              <button id="zoomOut" data-delta="-10">−</button>
+              <span id="zoomLevel">100%</span>
+              <button id="zoomIn" data-delta="10">+</button>
+            </div>
+          </div>
+
+          <button id="resetButton" class="reset-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+      </aside>
+
+      <button class="sidebar-toggle right" id="toggleRightSidebarFloat" data-tooltip="Show Controls">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
     </div>
   </div>
+
   <div id="resultPopup" class="result-popup">
     <div class="popup-content">
-      <h2>Typing Results</h2>
+      <h2>Results</h2>
       <div class="result-stats">
         <div class="result-stat">
           <span class="stat-label">WPM</span>
@@ -120,6 +140,80 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Add this script to handle code indentation and syntax highlighting
+    document.addEventListener('DOMContentLoaded', function() {
+      const textDisplay = document.getElementById('textDisplay');
+      const codeMode = document.getElementById('codeMode');
+      const textMode = document.getElementById('textMode');
+      const toggleLeftSidebar = document.getElementById('toggleLeftSidebar');
+      const toggleRightSidebar = document.getElementById('toggleRightSidebar');
+      const toggleLeftSidebarFloat = document.getElementById('toggleLeftSidebarFloat');
+      const toggleRightSidebarFloat = document.getElementById('toggleRightSidebarFloat');
+      const snippetSidebar = document.querySelector('.snippet-sidebar');
+      const controlsSidebar = document.querySelector('.controls-sidebar');
+
+      // Toggle sidebars
+      function toggleLeft() {
+        snippetSidebar.classList.toggle('collapsed');
+      }
+
+      function toggleRight() {
+        controlsSidebar.classList.toggle('collapsed');
+      }
+
+      toggleLeftSidebar.addEventListener('click', toggleLeft);
+      toggleLeftSidebarFloat.addEventListener('click', toggleLeft);
+      toggleRightSidebar.addEventListener('click', toggleRight);
+      toggleRightSidebarFloat.addEventListener('click', toggleRight);
+
+      function formatCode(text) {
+        // Split the text into lines
+        const lines = text.split('\n');
+        let formattedLines = [];
+        let indentLevel = 0;
+
+        lines.forEach(line => {
+          // Handle indentation
+          const trimmedLine = line.trim();
+          if (trimmedLine.endsWith('{')) {
+            formattedLines.push(`<span class="indent-${indentLevel}">${line}</span>`);
+            indentLevel++;
+          } else if (trimmedLine.startsWith('}')) {
+            indentLevel = Math.max(0, indentLevel - 1);
+            formattedLines.push(`<span class="indent-${indentLevel}">${line}</span>`);
+          } else {
+            formattedLines.push(`<span class="indent-${indentLevel}">${line}</span>`);
+          }
+
+          // Add syntax highlighting
+          formattedLines[formattedLines.length - 1] = formattedLines[formattedLines.length - 1]
+            .replace(/\b(function|const|let|var|if|else|for|while|return)\b/g, '<span class="keyword">$1</span>')
+            .replace(/"([^"]*)"/g, '<span class="string">"$1"</span>')
+            .replace(/'([^']*)'/g, '<span class="string">\'$1\'</span>')
+            .replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g, '<span class="function">$1</span>(')
+            .replace(/\/\/.*$/g, '<span class="comment">$&</span>');
+        });
+
+        return formattedLines.join('\n');
+      }
+
+      codeMode.addEventListener('click', function() {
+        textDisplay.classList.add('code');
+        if (textDisplay.textContent) {
+          textDisplay.innerHTML = formatCode(textDisplay.textContent);
+        }
+      });
+
+      textMode.addEventListener('click', function() {
+        textDisplay.classList.remove('code');
+        if (textDisplay.textContent) {
+          textDisplay.textContent = textDisplay.textContent.replace(/<[^>]*>/g, '');
+        }
+      });
+    });
+  </script>
   <script src="../scripts/typing_t.js"></script>
 </body>
 </html>

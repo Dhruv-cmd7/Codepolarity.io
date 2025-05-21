@@ -354,6 +354,9 @@ class KeyPolarity {
     this.isActive = false;
     this.targetText = '';
     this.zoomLevel = 100;
+    this.timeLimit = 30; // Default time limit
+    this.startTime = null;
+    this.timerInterval = null;
     this.resetTest();
   }
 
@@ -368,6 +371,15 @@ class KeyPolarity {
     this.snippetSidebar = document.querySelector('.snippet-sidebar');
     this.textSnippets = document.getElementById('textSnippets');
     this.codeSnippets = document.getElementById('codeSnippets');
+    this.wpmDisplay = document.getElementById('wpm');
+    this.accuracyDisplay = document.getElementById('accuracy');
+    this.timeLeftDisplay = document.getElementById('timeLeft');
+    this.resultPopup = document.getElementById('resultPopup');
+    this.resultWpm = document.getElementById('resultWpm');
+    this.resultAccuracy = document.getElementById('resultAccuracy');
+    this.resultTime = document.getElementById('resultTime');
+    this.retryButton = document.getElementById('retryButton');
+    this.closePopup = document.getElementById('closePopup');
   }
 
   addEventListeners() {
@@ -375,15 +387,34 @@ class KeyPolarity {
     this.codeMode.addEventListener('click', () => this.setMode('code'));
     this.resetButton.addEventListener('click', () => this.resetTest());
     this.textDisplay.addEventListener('keydown', (e) => this.handleKeyDown(e));
+    
+    // Fix timer button event listeners
+    const timerButtons = document.querySelectorAll('.timer-buttons button');
+    timerButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const time = parseInt(e.target.dataset.time);
+        this.setTimeLimit(time, e.target);
+      });
+    });
+
     this.zoomButtons.forEach(button => {
       button.addEventListener('click', () => {
         const delta = parseInt(button.dataset.delta);
         this.adjustZoom(delta);
       });
     });
-    this.toggleSidebar.addEventListener('click', () => this.toggleSidebarView());
+
+    // Add result popup event listeners
+    this.retryButton.addEventListener('click', () => {
+      this.hideResultPopup();
+      this.resetTest();
+    });
     
-    // Add event listeners for snippet selection
+    this.closePopup.addEventListener('click', () => {
+      this.hideResultPopup();
+    });
+    
+    // Add snippet selection event listeners
     this.textSnippets.querySelectorAll('li').forEach(li => {
       li.addEventListener('click', () => this.selectSnippet('text', li.textContent.toLowerCase()));
     });
@@ -393,64 +424,49 @@ class KeyPolarity {
     });
   }
 
-  toggleSidebarView() {
-    this.snippetSidebar.classList.toggle('collapsed');
-    const icon = this.toggleSidebar.querySelector('svg');
-    if (this.snippetSidebar.classList.contains('collapsed')) {
-      icon.innerHTML = '<path d="m9 18 6-6-6-6"/>';
-    } else {
-      icon.innerHTML = '<path d="m15 18-6-6 6-6"/>';
-    }
+  setTimeLimit(time, button) {
+    // Remove active class from all timer buttons
+    document.querySelectorAll('.timer-buttons button').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    
+    // Add active class to clicked button
+    button.classList.add('active');
+    
+    // Update time limit
+    this.timeLimit = time;
+    this.timeLeftDisplay.textContent = time;
+    
+    // Reset the test with new time limit
+    this.resetTest();
   }
 
-  selectSnippet(mode, category) {
-    if (mode === this.mode && !this.isResetting) {
-      this.currentCategory = category;
-      
-      // Update active state in UI
-      const listItems = mode === 'text' ? 
-        this.textSnippets.querySelectorAll('li') : 
-        this.codeSnippets.querySelectorAll('li');
-      
-      listItems.forEach(li => {
-        li.classList.toggle('active', li.textContent.toLowerCase() === category);
-      });
-      
-      this.debouncedReset();
-    }
-  }
-
-  setMode(newMode) {
-    if (this.mode !== newMode && !this.isResetting) {
-      this.mode = newMode;
-      this.textMode.classList.toggle('active', newMode === 'text');
-      this.codeMode.classList.toggle('active', newMode === 'code');
-      this.textDisplay.classList.toggle('text', newMode === 'text');
-      this.textDisplay.classList.toggle('code', newMode === 'code');
-      
-      // Reset category to random when switching modes
-      this.currentCategory = 'random';
-      
-      // Update active states in UI
-      this.textSnippets.querySelectorAll('li').forEach(li => {
-        li.classList.toggle('active', newMode === 'text' && li.textContent.toLowerCase() === 'random');
-      });
-      
-      this.codeSnippets.querySelectorAll('li').forEach(li => {
-        li.classList.toggle('active', newMode === 'code' && li.textContent.toLowerCase() === 'random');
-      });
-      
-      this.debouncedReset();
-    }
-  }
-
-  debouncedReset() {
-    if (this.resetTimeout) {
-      clearTimeout(this.resetTimeout);
+  startTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
     
-    this.resetTimeout = setTimeout(() => {
-      this.resetTest();
+    this.startTime = Date.now();
+    this.isActive = true;
+    
+    this.timerInterval = setInterval(() => {
+      const elapsed = (Date.now() - this.startTime) / 1000;
+      const timeLeft = Math.max(0, Math.ceil(this.timeLimit - elapsed));
+      
+      this.timeLeftDisplay.textContent = timeLeft;
+      
+      // Add visual feedback for time running low
+      if (timeLeft <= 5) {
+        this.timeLeftDisplay.style.color = '#ef4444';
+        this.timeLeftDisplay.classList.add('warning');
+      } else {
+        this.timeLeftDisplay.style.color = 'var(--accent-primary)';
+        this.timeLeftDisplay.classList.remove('warning');
+      }
+      
+      if (elapsed >= this.timeLimit) {
+        this.endTest();
+      }
     }, 100);
   }
 
@@ -473,16 +489,19 @@ class KeyPolarity {
     this.typedText = '';
     this.currentIndex = 0;
     this.startTime = null;
-    this.wpm = 0;
-    this.accuracy = 100;
     this.isFinished = false;
-    this.timeLeft = this.timeLimit;
     this.isActive = false;
+    
+    // Reset displays
+    this.timeLeftDisplay.textContent = this.timeLimit;
+    this.timeLeftDisplay.style.color = 'var(--accent-primary)';
+    this.timeLeftDisplay.classList.remove('warning');
+    this.wpmDisplay.textContent = '0';
+    this.accuracyDisplay.textContent = '100';
     
     // Update UI
     requestAnimationFrame(() => {
       this.updateDisplay();
-      this.updateStats();
       this.isResetting = false;
     });
   }
@@ -511,10 +530,19 @@ class KeyPolarity {
     
     const wpm = this.calculateWPM(typed, elapsed);
     const accuracy = this.calculateAccuracy(typed, target);
+    const timeLeft = Math.max(0, Math.ceil(this.timeLimit - elapsed));
     
+    // Update displays with smooth transitions
     this.wpmDisplay.textContent = Math.round(wpm);
     this.accuracyDisplay.textContent = Math.round(accuracy);
-    this.timeLeftDisplay.textContent = Math.max(0, Math.ceil(this.timeLimit - elapsed));
+    this.timeLeftDisplay.textContent = timeLeft;
+    
+    // Add visual feedback for time running low
+    if (timeLeft <= 5) {
+      this.timeLeftDisplay.style.color = '#ef4444';
+    } else {
+      this.timeLeftDisplay.style.color = 'var(--accent-primary)';
+    }
     
     // Show popup when timer reaches zero
     if (elapsed >= this.timeLimit && !this.isFinished) {
@@ -571,7 +599,7 @@ class KeyPolarity {
       this.isActive = true;
       this.startTime = Date.now();
       
-      // Start the timer
+      // Start the timer with more frequent updates for smoother countdown
       this.timerInterval = setInterval(() => {
         const elapsed = (Date.now() - this.startTime) / 1000;
         this.timeLeft = Math.max(0, this.timeLimit - elapsed);
@@ -584,7 +612,7 @@ class KeyPolarity {
           this.timerInterval = null;
           this.showResultPopup();
         }
-      }, 1000);
+      }, 100); // Update every 100ms for smoother countdown
     }
 
     if (e.key === 'Enter' && this.mode === 'code') {
@@ -658,31 +686,100 @@ class KeyPolarity {
   }
 
   adjustZoom(delta) {
-    this.zoomLevel = Math.max(50, Math.min(200, this.zoomLevel + delta));
-    this.textDisplay.style.fontSize = `${this.zoomLevel}%`;
-    this.zoomLevelDisplay.textContent = `${this.zoomLevel}%`;
+    const newZoom = Math.max(50, Math.min(200, this.zoomLevel + delta));
+    if (newZoom !== this.zoomLevel) {
+      this.zoomLevel = newZoom;
+      this.textDisplay.style.fontSize = `${this.zoomLevel}%`;
+      this.zoomLevelDisplay.textContent = `${this.zoomLevel}%`;
+      
+      // Add visual feedback
+      this.zoomLevelDisplay.style.transform = 'scale(1.2)';
+      setTimeout(() => {
+        this.zoomLevelDisplay.style.transform = 'scale(1)';
+      }, 200);
+    }
   }
 
   showResultPopup() {
-    // Update popup values
-    this.resultWpm.textContent = this.wpmDisplay.textContent;
-    this.resultAccuracy.textContent = this.accuracyDisplay.textContent;
-    this.resultTime.textContent = this.timeLeftDisplay.textContent;
+    // Calculate final stats
+    const wpm = Math.round(this.calculateWPM(this.currentIndex, this.timeLimit));
+    const accuracy = Math.round(this.calculateAccuracy(this.currentIndex, this.targetText.length));
     
-    // Show popup with animation
-    this.resultPopup.style.display = 'flex';
-    setTimeout(() => {
-      this.resultPopup.classList.add('show');
-    }, 10);
+    // Update popup values with animations
+    this.resultWpm.textContent = wpm;
+    this.resultAccuracy.textContent = accuracy + '%';
+    this.resultTime.textContent = this.timeLimit + 's';
+    
+    // Add visual feedback based on performance
+    if (wpm >= 60) {
+      this.resultWpm.style.color = '#10b981'; // Green for good performance
+    } else if (wpm >= 40) {
+      this.resultWpm.style.color = '#f59e0b'; // Yellow for average performance
+    } else {
+      this.resultWpm.style.color = '#ef4444'; // Red for poor performance
+    }
+    
+    // Show popup
+    this.resultPopup.classList.add('active');
   }
 
   hideResultPopup() {
-    this.resultPopup.classList.remove('show');
-    setTimeout(() => {
-      this.resultPopup.style.display = 'none';
-    }, 300);
+    this.resultPopup.classList.remove('active');
+  }
+
+  setMode(newMode) {
+    if (this.mode !== newMode && !this.isResetting) {
+      this.mode = newMode;
+      this.textMode.classList.toggle('active', newMode === 'text');
+      this.codeMode.classList.toggle('active', newMode === 'code');
+      this.textDisplay.classList.toggle('text', newMode === 'text');
+      this.textDisplay.classList.toggle('code', newMode === 'code');
+      
+      // Reset category to random when switching modes
+      this.currentCategory = 'random';
+      
+      // Update active states in UI
+      this.textSnippets.querySelectorAll('li').forEach(li => {
+        li.classList.toggle('active', newMode === 'text' && li.textContent.toLowerCase() === 'random');
+      });
+      
+      this.codeSnippets.querySelectorAll('li').forEach(li => {
+        li.classList.toggle('active', newMode === 'code' && li.textContent.toLowerCase() === 'random');
+      });
+      
+      this.debouncedReset();
+    }
+  }
+
+  debouncedReset() {
+    if (this.resetTimeout) {
+      clearTimeout(this.resetTimeout);
+    }
+    
+    this.resetTimeout = setTimeout(() => {
+      this.resetTest();
+    }, 100);
+  }
+
+  selectSnippet(mode, category) {
+    if (mode === this.mode && !this.isResetting) {
+      this.currentCategory = category;
+      
+      // Update active state in UI
+      const listItems = mode === 'text' ? 
+        this.textSnippets.querySelectorAll('li') : 
+        this.codeSnippets.querySelectorAll('li');
+      
+      listItems.forEach(li => {
+        li.classList.toggle('active', li.textContent.toLowerCase() === category);
+      });
+      
+      this.debouncedReset();
+    }
   }
 }
 
 // Initialize the application
-new KeyPolarity();
+document.addEventListener('DOMContentLoaded', () => {
+  new KeyPolarity();
+});
