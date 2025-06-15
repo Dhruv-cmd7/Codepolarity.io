@@ -859,6 +859,15 @@ main {
   .feature-card {
     padding: 1.5rem;
   }
+
+  .brand-scrolling::before,
+  .brand-scrolling::after {
+    background: none !important;
+  }
+  .user-reviews::before,
+  .user-reviews::after {
+    background: none !important;
+  }
 }
 
 @media (max-width: 480px) {
